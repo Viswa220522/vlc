@@ -37,10 +37,10 @@ T.Control {
     readonly property ColorContext colorContext: ColorContext {
         id: theme
 
-        colorSet: ColorContext.ToolButton
+        colorSet: ColorContext.ButtonAccent
 
         enabled: root.enabled || root.paintOnly
-        focused: root.activeFocus
+        focused: root.visualFocus
         hovered: root.cursorInside
         pressed: mouseArea.containsPress
     }
@@ -73,30 +73,6 @@ T.Control {
     T.ToolTip.visible: (hovered || visualFocus)
     T.ToolTip.delay: VLCStyle.delayToolTipAppear
     T.ToolTip.text: root.Accessible.name
-
-    // States
-
-    states: [
-        State {
-            name: "hovered"
-            when: cursorInside
-
-            PropertyChanges {
-                target: hoverShadow
-                opacity: 1.0
-            }
-        }
-    ]
-
-    transitions: Transition {
-        from: ""; to: "*"
-        reversible: true
-        NumberAnimation {
-            properties: "opacity"
-            easing.type: Easing.InOutSine
-            duration: VLCStyle.duration_veryShort
-        }
-    }
 
     // Keys
 
@@ -152,19 +128,7 @@ T.Control {
 
         hoverEnabled: true
 
-        readonly property bool cursorInside: {
-            if (!containsMouse)
-                return false
-
-            const center = (width / 2)
-            if (Helpers.pointInRadius( center - mouseX,
-                                       center - mouseY,
-                                       center )) {
-                return true
-            } else {
-                return false
-            }
-        }
+        readonly property bool cursorInside: containsMouse
 
         onCursorInsideChanged: {
             if (pressed && !cursorInside) {
@@ -217,10 +181,9 @@ T.Control {
                 return VLCIcons.play_filled
         }
 
-        color: cursorInside ? theme.accent
-                            : "black"  //foreground is always black
+        color: (root.enabled || root.paintOnly) ? VLCStyle.foregroundForAccent(theme.bg.primary) : theme.fg.primary
 
-        font.pixelSize: Math.round(parent.height / 1.7)
+        font.pixelSize: VLCStyle.icon_normal
 
         font.family: VLCIcons.fontFamily
 
@@ -240,87 +203,66 @@ T.Control {
     }
 
     background: Item {
-        implicitWidth: height
-        implicitHeight: VLCStyle.icon_medium
-
-        Widgets.AnimatedBackground {
-            anchors.fill: parent
-            anchors.margins: -border.width * 4
-
-            radius: width / 2
-            border.pixelAligned: false
-
-            enabled: theme.initialized
-
-            border.color: root.visualFocus ? theme.visualFocus : Qt.alpha(theme.visualFocus, 0.0)
-        }
+        implicitWidth: VLCStyle.playButtonWidth
+        implicitHeight: VLCStyle.playButtonHeight
 
         Rectangle {
             anchors.fill: parent
+            radius: VLCStyle.button_radius
+            color: Qt.darker(theme.bg.primary, 1.3)
+        }
 
-            radius: width / 2
+        Rectangle {
+            id: innerRectangle
 
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#e25b01" }
-                GradientStop { position: 1.0; color: "#f89a06" }
-            }
+            color: theme.bg.primary
 
-            Widgets.RoundedRectangleShadow {
-                id: hoverShadow
+            anchors.fill: parent
+            anchors.margins: _diminished ? (Math.min(parent.width, parent.height) / 2) : 0
 
-                visible: opacity > 0
-                opacity: 0
+            radius: VLCStyle.button_radius
 
-                blurRadius: VLCStyle.dp(9, VLCStyle.scale)
-                yOffset: VLCStyle.dp(4, VLCStyle.scale)
+            property bool _diminished: false
 
-                color: theme.accent.alpha(0.29)
-            }
-
-            Rectangle {
-                id: innerRectangle
-
-                color: "white"
-
-                anchors.fill: parent
-                anchors.margins: _diminished ? (parent.width / 2)
-                                             : VLCStyle.dp(2, VLCStyle.scale)
-
-                radius: width / 2
-
-                property bool _diminished: false
-
-                onStateChanged: {
-                    if (state === "diminished") {
-                        marginBehavior.enabled = true
-                        bindingTimer.start()
-                    } else {
-                        bindingTimer.stop()
-                        marginBehavior.enabled = false
-                        _diminished = false
-                    }
-                }
-
-                Timer {
-                    // Do not immediately start the animation.
-                    // Give some time if the intention is not
-                    // to hold the button.
-                    id: bindingTimer
-                    interval: mouseArea.pressAndHoldInterval / 3
-                    onTriggered: innerRectangle._diminished = true
-                }
-
-                Behavior on anchors.margins {
-                    id: marginBehavior
-                    NumberAnimation {
-                        // Press and hold action must be triggered
-                        // as soon as the inner rectangle diminishes.
-                        // Subtract the interval here so that we satisfy
-                        // that condition.
-                        duration: mouseArea.pressAndHoldInterval - bindingTimer.interval
-                    }
+            onStateChanged: {
+                if (state === "diminished") {
+                    marginBehavior.enabled = true
+                    bindingTimer.start()
+                } else {
+                    bindingTimer.stop()
+                    marginBehavior.enabled = false
+                    _diminished = false
                 }
             }
+
+            Timer {
+                // Do not immediately start the animation.
+                // Give some time if the intention is not
+                // to hold the button.
+                id: bindingTimer
+                interval: mouseArea.pressAndHoldInterval / 3
+                onTriggered: innerRectangle._diminished = true
+            }
+
+            Behavior on anchors.margins {
+                id: marginBehavior
+                NumberAnimation {
+                    // Press and hold action must be triggered
+                    // as soon as the inner rectangle diminishes.
+                    // Subtract the interval here so that we satisfy
+                    // that condition.
+                    duration: mouseArea.pressAndHoldInterval - bindingTimer.interval
+                }
+            }
+        }
+
+        Widgets.AnimatedBackground {
+            anchors.fill: parent
+            anchors.margins: -VLCStyle.margin_xxxsmall
+            enabled: theme.initialized
+            color: "transparent"
+            radius: VLCStyle.button_radius + VLCStyle.margin_xxxsmall
+            border.color: root.visualFocus ? theme.visualFocus : "transparent"
         }
     }
 }

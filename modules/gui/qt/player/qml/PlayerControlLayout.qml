@@ -30,11 +30,21 @@ FocusScope {
 
     // Properties
 
-    property real spacing: VLCStyle.margin_normal // spacing between controls
+    property real spacing: VLCStyle.margin_xsmall // spacing between controls
 
     property real layoutSpacing: VLCStyle.margin_xxlarge // spacing between layouts (left, center, and right)
 
     property int identifier: -1
+
+    // The seek row occupies the flexible space of profiles with no center group.
+    // Its minimum width is measured independently of the active layout.
+    property real seekBarHeight: 0
+    property Item seekBarFocusItem: null
+    property real seekBarMinimumWidth: 0
+    readonly property Item seekBarHost: loaderLeftRight.item?.seekBarHost ?? null
+    readonly property Item seekBarLeftItem: loaderLeftRight.item?.lastLeftControl ?? null
+    readonly property Item seekBarRightItem: loaderLeftRight.item?.firstRightControl ?? null
+    readonly property real minimumInlineWidth: loaderLeftRight.item?.minimumInlineWidth ?? Number.MAX_VALUE
 
     readonly property PlayerControlbarModel model: {
         if (!!MainCtx.controlbarProfileModel.currentModel)
@@ -84,6 +94,32 @@ FocusScope {
         sourceComponent: RowLayout {
             spacing: playerControlLayout.spacing
 
+            property alias seekBarHost: seekBarContainer
+            readonly property Item lastLeftControl: edgeControl(leftRepeater, false)
+            readonly property Item firstRightControl: edgeControl(rightRepeater, true)
+
+            function edgeControl(repeater, first) {
+                for (let i = 0; i < repeater.count; ++i) {
+                    const loader = repeater.itemAt(first ? i : repeater.count - 1 - i)
+                    if (loader?.visible && loader.item?.enabled)
+                        return loader.item
+                }
+                return null
+            }
+            readonly property real minimumInlineWidth: requiredWidth(leftRepeater) + requiredWidth(rightRepeater)
+                                                        + playerControlLayout.seekBarMinimumWidth
+                                                        + (leftRepeater.count + rightRepeater.count) * spacing
+
+            function requiredWidth(repeater) {
+                let result = 0
+                for (let i = 0; i < repeater.count; ++i) {
+                    const item = repeater.itemAt(i)
+                    if (item)
+                        result += Math.max(0, item.implicitWidth, item.Layout.minimumWidth)
+                }
+                return result
+            }
+
             focus: true
 
             // TODO: Qt >= 5.13 Use QConcatenateTablesProxyModel
@@ -100,6 +136,10 @@ FocusScope {
 
                 Navigation.parentItem: playerControlLayout
                 Navigation.rightAction: function() {
+                    if (playerControlLayout.seekBarFocusItem?.enabled) {
+                        playerControlLayout.seekBarFocusItem.forceActiveFocus(Qt.TabFocusReason)
+                        return
+                    }
                     const item = rightRepeater.itemAt(0)
                     if (item)
                         item.forceActiveFocus(Qt.TabFocusReason)
@@ -118,6 +158,10 @@ FocusScope {
             }
 
             Item {
+                id: seekBarContainer
+
+                implicitHeight: playerControlLayout.seekBarHeight
+
                 function containsVisibleItem(repeater) {
                     for (let i = 0; i < repeater.count; ++i) {
                         const item = repeater.itemAt(i)
@@ -129,8 +173,8 @@ FocusScope {
                     return false
                 }
 
-                Layout.minimumWidth: (containsVisibleItem(leftRepeater) && containsVisibleItem(rightRepeater)) ? playerControlLayout.layoutSpacing
-                                                                                                               : 0
+                Layout.minimumWidth: playerControlLayout.seekBarHeight > 0 ? playerControlLayout.seekBarMinimumWidth
+                                      : ((containsVisibleItem(leftRepeater) && containsVisibleItem(rightRepeater)) ? playerControlLayout.layoutSpacing : 0)
 
                 Layout.fillWidth: true
                 visible: true
@@ -147,6 +191,10 @@ FocusScope {
 
                 Navigation.parentItem: playerControlLayout
                 Navigation.leftAction: function() {
+                    if (playerControlLayout.seekBarFocusItem?.enabled) {
+                        playerControlLayout.seekBarFocusItem.forceActiveFocus(Qt.BacktabFocusReason)
+                        return
+                    }
                     const item = leftRepeater.itemAt(leftRepeater.count - 1)
                     if (item)
                         item.forceActiveFocus(Qt.BacktabFocusReason)

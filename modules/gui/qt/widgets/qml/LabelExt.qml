@@ -20,6 +20,7 @@ import QtQuick.Templates as T
 import VLC.Style
 
 T.Label {
+    font.family: VLCStyle.fontFamily
     T.ToolTip.visible: (elide !== Text.ElideNone) && (width < implicitWidth) && hoverHandler.hovered
     T.ToolTip.delay: VLCStyle.delayToolTipAppear
     T.ToolTip.text: text

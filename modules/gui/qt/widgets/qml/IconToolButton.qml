@@ -42,7 +42,7 @@ T.ToolButton {
 
     // Settings
 
-    padding: 0
+    padding: VLCStyle.margin_xxsmall
 
     enabled: !paintOnly
 

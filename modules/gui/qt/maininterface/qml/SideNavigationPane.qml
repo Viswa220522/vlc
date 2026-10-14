@@ -55,7 +55,7 @@ T.Pane {
 
     readonly property ColorContext colorContext: ColorContext {
         id: theme
-        colorSet: ColorContext.Window
+        colorSet: root.delegateShowText ? ColorContext.View : ColorContext.Window
     }
 
     Accessible.name: qsTr("Sidebar")

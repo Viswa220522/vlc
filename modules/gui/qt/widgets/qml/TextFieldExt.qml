@@ -39,11 +39,12 @@ TextField {
     color : theme.fg.primary
     placeholderTextColor: theme.fg.secondary
 
+    font.family: VLCStyle.fontFamily
     font.pixelSize: VLCStyle.fontSize_normal
 
     verticalAlignment: Text.AlignVCenter
 
-    property real radius
+    property real radius: VLCStyle.button_radius
 
     background: Rectangle {
         implicitWidth: 200

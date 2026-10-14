@@ -354,8 +354,9 @@ FocusScope{
 
         text: root.title
         color: theme.fg.primary
-        font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
-        font.weight: Font.DemiBold
+        font.family: VLCStyle.fontFamily
+        font.pixelSize: VLCStyle.fontSize_normal
+        font.weight: Font.Normal
         elide: Text.ElideRight
         verticalAlignment: Text.AlignVCenter
 
@@ -394,7 +395,8 @@ FocusScope{
         horizontalAlignment: Text.AlignLeft
         color: theme.fg.primary
         font.weight: Font.DemiBold
-        font.pixelSize: VLCStyle.dp(18, VLCStyle.scale)
+        font.family: VLCStyle.fontFamily
+        font.pixelSize: VLCStyle.fontSize_xlarge
         elide: Text.ElideRight
     }
 

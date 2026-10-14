@@ -99,7 +99,7 @@ T.ItemDelegate {
 
     background: Widgets.AnimatedBackground {
         enabled: theme.initialized
-        color: theme.bg.primary
+        color: control.checked ? Qt.alpha(theme.accent, 0.12) : theme.bg.primary
         border.color: visualFocus ? theme.visualFocus : "transparent"
 
         radius: control.radius
@@ -158,6 +158,7 @@ T.ItemDelegate {
 
             visible: control.showText
 
+            font.family: VLCStyle.fontFamily
             font.pixelSize: VLCStyle.fontSize_normal
 
             font.weight: control.checked ? Font.DemiBold : Font.Normal

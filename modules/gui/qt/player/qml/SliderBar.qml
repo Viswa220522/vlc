@@ -28,14 +28,15 @@ import VLC.MainInterface
 T.ProgressBar {
     id: control
 
-    readonly property real _hoveredScalingFactor: 1.8
+    property bool compact: false
+    readonly property real _hoveredScalingFactor: compact ? 1.0 : 1.8
     property int barHeight: VLCStyle.dp(5, VLCStyle.scale)
     readonly property real _scaledBarHeight: control.barHeight * _hoveredScalingFactor
     readonly property real _scaledY: (-control.barHeight / 2) * (control._hoveredScalingFactor - 1)
 
     property bool _isSeekPointsShown: true
     readonly property int _seekPointsDistance: VLCStyle.dp(2, VLCStyle.scale)
-    readonly property int _seekPointsRadius: VLCStyle.dp(0.5, VLCStyle.scale)
+    readonly property int _seekPointsRadius: compact ? VLCStyle.button_radius : VLCStyle.dp(0.5, VLCStyle.scale)
     readonly property real _scaledSeekPointsRadius: _seekPointsRadius * _hoveredScalingFactor
 
     property bool _currentChapterHovered: false
@@ -315,6 +316,16 @@ T.ProgressBar {
     }
 
     background: Item {
+        Rectangle {
+            anchors.fill: parent
+            z: 1
+            visible: control.compact && control.visualFocus
+            color: "transparent"
+            border.width: VLCStyle.focus_border
+            border.color: theme.visualFocus
+            radius: VLCStyle.button_radius
+        }
+
         width: control.availableWidth
         implicitHeight: control.implicitHeight
         height: implicitHeight
@@ -324,7 +335,7 @@ T.ProgressBar {
             visible: !Player.hasChapters
             color: control.backgroundColor
             anchors.fill: parent
-            radius: implicitHeight
+            radius: control.compact ? VLCStyle.button_radius : implicitHeight
         }
 
         Repeater {
@@ -431,8 +442,9 @@ T.ProgressBar {
             id: progressRect
             width: control.visualPosition * parent.width
             visible: !Player.hasChapters
-            color: theme.fg.primary
-            height: control.barHeight
+            color: control.compact ? Qt.alpha(theme.fg.primary, 0.25) : theme.fg.primary
+            height: control.compact ? control.barHeight - VLCStyle.margin_xxsmall : control.barHeight
+            y: control.compact ? VLCStyle.margin_xxxsmall : 0
             radius: control._seekPointsRadius
 
             // We use dynamic mutability group because time interpolation
@@ -568,14 +580,14 @@ T.ProgressBar {
     Rectangle {
         id: sliderHandle
 
-        property int _size: control.barHeight * 3
+        property int _size: control.compact ? VLCStyle.dp(8, VLCStyle.scale) : control.barHeight * 3
 
         x: (control.visualPosition * control.availableWidth) - width / 2
         y: (control.barHeight - height) / 2
 
         implicitWidth: sliderHandle._size
-        implicitHeight: sliderHandle._size
-        radius: VLCStyle.margin_small
+        implicitHeight: control.compact ? control.barHeight - VLCStyle.margin_xxsmall : sliderHandle._size
+        radius: control.compact ? VLCStyle.button_radius - VLCStyle.margin_xxxsmall : VLCStyle.margin_small
         color: theme.fg.primary
 
         // We use dynamic mutability group because time interpolation
@@ -625,7 +637,15 @@ T.ProgressBar {
             }
         ]
 
-        state: (hoverHandler.hovered || control.visualFocus)
+        states: State {
+            name: "compact"
+            PropertyChanges {
+                target: sliderHandle
+                visible: true
+            }
+        }
+
+        state: control.compact ? "compact" : (hoverHandler.hovered || control.visualFocus)
                ? ((control._currentChapterHovered || (Player.hasChapters && fsm._state === fsm.fsmHeld)) ? "visibleLarge" : "visible")
                : "hidden"
     }

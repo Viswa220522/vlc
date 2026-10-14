@@ -26,14 +26,22 @@ QtObject {
 
     readonly property real scale: MainCtx.intfScaleFactor
 
+    // Do not depend on platform font substitution for an uninstalled family.
+    readonly property var installedFontFamilies: Qt.fontFamilies()
+    readonly property string fontFamily: installedFontFamilies.includes("Inter") ? "Inter"
+                                        : (Qt.platform.os === "windows" && installedFontFamilies.includes("Segoe UI") ? "Segoe UI" : Qt.application.font.family)
+    readonly property string timeFontFamily: installedFontFamilies.includes("DM Mono") ? "DM Mono"
+                                             : (Qt.platform.os === "windows" ? "Consolas" : "monospace")
+    readonly property int fontSize_time: MainCtx.dp(15, scale)
+
     readonly property FontMetrics fontMetrics_xxsmall  : FontMetrics { font.pixelSize: MainCtx.dp(6, scale);  }
     readonly property FontMetrics fontMetrics_xsmall   : FontMetrics { font.pixelSize: MainCtx.dp(8, scale);  }
     readonly property FontMetrics fontMetrics_small    : FontMetrics { font.pixelSize: MainCtx.dp(10, scale); }
-    readonly property FontMetrics fontMetrics_normal   : FontMetrics { font.pixelSize: MainCtx.dp(12, scale); }
-    readonly property FontMetrics fontMetrics_large    : FontMetrics { font.pixelSize: MainCtx.dp(14, scale); }
-    readonly property FontMetrics fontMetrics_xlarge   : FontMetrics { font.pixelSize: MainCtx.dp(16, scale); }
-    readonly property FontMetrics fontMetrics_xxlarge  : FontMetrics { font.pixelSize: MainCtx.dp(20, scale); }
-    readonly property FontMetrics fontMetrics_xxxlarge : FontMetrics { font.pixelSize: MainCtx.dp(24, scale); }
+    readonly property FontMetrics fontMetrics_normal   : FontMetrics { font.family: vlc_style.fontFamily; font.pixelSize: MainCtx.dp(14, scale); }
+    readonly property FontMetrics fontMetrics_large    : FontMetrics { font.family: vlc_style.fontFamily; font.pixelSize: MainCtx.dp(16, scale); }
+    readonly property FontMetrics fontMetrics_xlarge   : FontMetrics { font.family: vlc_style.fontFamily; font.pixelSize: MainCtx.dp(18, scale); }
+    readonly property FontMetrics fontMetrics_xxlarge  : FontMetrics { font.family: vlc_style.fontFamily; font.pixelSize: MainCtx.dp(22, scale); }
+    readonly property FontMetrics fontMetrics_xxxlarge : FontMetrics { font.family: vlc_style.fontFamily; font.pixelSize: MainCtx.dp(26, scale); }
 
     readonly property SystemPalette palette:  SystemPalette {
         objectName: "themePalette"
@@ -115,7 +123,7 @@ QtObject {
     readonly property int icon_track: icon_normal
     readonly property int icon_tableHeader: icon_normal
     readonly property int icon_playlistHeader: icon_normal
-    readonly property int icon_banner: MainCtx.dp(28, scale)
+    readonly property int icon_banner: icon_normal
     readonly property int icon_play: MainCtx.dp(28, scale)
     readonly property int icon_addressBar: icon_normal
     readonly property int icon_actionButton: icon_normal
@@ -148,8 +156,9 @@ QtObject {
     readonly property int defaultWidthPlaylist: MainCtx.dp(300, scale);
     readonly property int closedWidthPlaylist: MainCtx.dp(20, scale);
 
-    readonly property int expandNavigationPaneWidth: MainCtx.dp(160, scale);
-    readonly property int buttonHeightNavigationPane: MainCtx.dp(35, scale);
+    readonly property int expandNavigationPaneWidth: MainCtx.dp(240, scale);
+    readonly property int collapsedNavigationPaneWidth: MainCtx.dp(50, scale);
+    readonly property int buttonHeightNavigationPane: MainCtx.dp(44, scale);
 
     readonly property int widthSearchInput: MainCtx.dp(200, scale);
     readonly property int widthSortBox: MainCtx.dp(150, scale);
@@ -175,7 +184,10 @@ QtObject {
     readonly property int button_width_normal: MainCtx.dp(96, scale)
     readonly property int button_width_large: MainCtx.dp(128, scale)
 
-    readonly property real button_radius: MainCtx.dp(4, scale)
+    readonly property real button_radius: MainCtx.dp(6, scale)
+
+    readonly property int playButtonWidth: MainCtx.dp(54, scale)
+    readonly property int playButtonHeight: MainCtx.dp(32, scale)
 
     readonly property int contextButton_width: icon_normal
     readonly property int contextButton_margin: margin_xxsmall
@@ -268,8 +280,8 @@ QtObject {
     readonly property int bannerTabButton_width_small: icon_banner
     readonly property int bannerTabButton_width_large: column_width
 
-    readonly property int bannerButton_height: icon_banner
-    readonly property int bannerButton_width: icon_banner
+    readonly property int bannerButton_height: icon_normal + margin_xsmall
+    readonly property int bannerButton_width: bannerButton_height
 
     // Drag and drop
 
@@ -324,12 +336,30 @@ QtObject {
     readonly property int controlBarBookmarksHeight: icon_xsmall * 0.9
 
     // Player control layout
-    readonly property int controlLayoutHeight: MainCtx.dp(64, scale)
+    readonly property int controlLayoutHeight: MainCtx.dp(48, scale)
     readonly property int controlLayoutHeightPinned: MainCtx.dp(32, scale)
 
     // Scroll bar (size means width or height, depending on the orientation):
     readonly property real scrollBarInteractingSize: MainCtx.dp(8, scale)
     readonly property real scrollBarNonInteractingSize: MainCtx.dp(2, scale)
+
+    // Keep the reference ink when it is readable, including with custom or
+    // system accents. Fall back to white or black for mid-tone backgrounds.
+    function foregroundForAccent(background: color) : color {
+        function linear(channel) {
+            return channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4)
+        }
+
+        const luminance = 0.2126 * linear(background.r)
+                        + 0.7152 * linear(background.g)
+                        + 0.0722 * linear(background.b)
+        const inkLuminance = linear(22 / 255)
+        if ((luminance + 0.05) / (inkLuminance + 0.05) >= 4.5)
+            return "#161616"
+        if (1.05 / (luminance + 0.05) >= 4.5)
+            return "#FFFFFF"
+        return "#000000"
+    }
 
     function dp(size: real, scale: real) : real {
         if (!scale)
