@@ -23,6 +23,8 @@ jobs:
     container:
       # VideoLAN's win64 CI image from extras/ci/gitlab-ci.yml, pinned by digest.
       image: registry.videolan.org/vlc-debian-win64-posix@sha256:8e83e800036f8f4a6da1031a6b80c2b5bad8337259c072ffa22398baaeaad880
+      # The image's default UID cannot write GitHub runner command files.
+      options: --user 0:0
     defaults:
       run:
         shell: bash
