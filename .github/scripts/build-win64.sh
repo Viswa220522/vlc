@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Run in VideoLAN's win64 CI image. Produces a portable ZIP, no host install.
 set -euo pipefail
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
 
 source_root=$(git rev-parse --show-toplevel)
 cd "$source_root"
@@ -18,6 +20,38 @@ x86_64-w64-mingw32-g++ --version
 curl --fail --location --head --max-time 60 "$VLC_PREBUILT_CONTRIBS_URL"
 
 mkdir -p "$source_root/.build" "$source_root/build-output"
+# The published bundle's HostData contains a relative prefix concatenated with
+# its relocation marker. HostPrefix is relative to the original GitLab layout.
+# Use explicit target/native paths for this out-of-tree GitHub checkout.
+target_qt_prefix="$source_root/.build/contrib/x86_64-w64-mingw32"
+host_qt_prefix=$(qmake6 -query QT_HOST_PREFIX)
+cat > "$source_root/.build/relocated-qt.conf" <<EOF
+[Paths]
+Prefix=$target_qt_prefix
+Documentation=doc
+Headers=include
+Libraries=lib
+LibraryExecutables=bin
+Binaries=bin
+Plugins=plugins
+QmlImports=qml
+ArchData=.
+Data=.
+Translations=translations
+Examples=examples
+Tests=tests
+Settings=etc/xdg
+HostPrefix=$host_qt_prefix
+HostBinaries=bin
+HostLibraries=lib
+HostLibraryExecutables=libexec
+HostData=$target_qt_prefix
+Sysroot=
+SysrootifyPrefix=false
+TargetSpec=win32-g++
+HostSpec=
+EOF
+export CONFIGFLAGS="${CONFIGFLAGS:-} --with-qtconf=$source_root/.build/relocated-qt.conf"
 cd "$source_root/.build"
 export JOBS=2
 "$source_root/extras/package/win32/build.sh" -a x86_64 -p 2>&1 | tee win64-build.log
@@ -39,6 +73,15 @@ with zipfile.ZipFile(sys.argv[1]) as package:
     missing = [suffix for suffix in required if not any(n.endswith(suffix) for n in names)]
     if missing:
         raise SystemExit(f'Portable package is missing required files: {missing}')
+    roots = {name.split('/')[0] for name in names if name.endswith('/vlc.exe')}
+    if len(roots) != 1:
+        raise SystemExit(f'Unexpected package roots: {roots}')
+    root = roots.pop()
+with zipfile.ZipFile(sys.argv[1], 'a', compression=zipfile.ZIP_DEFLATED) as package:
+    # VLC recognizes this directory and keeps configuration with the ZIP build.
+    package.writestr(f'{root}/portable/vlc/vlc-qt-interface.ini',
+                     '[MainWindow]\ncolor-scheme-index=2\n')
+    package.writestr(f'{root}/portable/vlcrc', '[qt]\nqt-pin-controls=1\n')
 print('Portable package includes VLC, core libraries, and the native Qt plugin.')
 PY
 cp "${packages[0]}" "$source_root/build-output/"
