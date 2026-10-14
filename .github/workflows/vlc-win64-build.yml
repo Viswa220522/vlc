@@ -6,6 +6,9 @@ on:
     paths:
       - '.github/workflows/vlc-win64-build.yml'
       - '.github/scripts/build-win64.sh'
+      - 'modules/gui/qt/**/*.qml'
+      - 'modules/gui/qt/**/*.cpp'
+      - 'modules/gui/qt/**/*.hpp'
   workflow_dispatch:
 
 permissions:
@@ -13,7 +16,7 @@ permissions:
 
 concurrency:
   group: vlc-win64-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   win64:

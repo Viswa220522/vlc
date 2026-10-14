@@ -122,6 +122,7 @@ T.ItemDelegate {
 
         Item {
             Layout.preferredWidth: VLCStyle.icon_banner
+            Layout.fillWidth: !control.showText
             Layout.fillHeight: true
 
             Widgets.IconLabel {

@@ -462,7 +462,8 @@ T.ProgressBar {
         Rectangle {
             id: bufferRect
             property int bufferAnimWidth: VLCStyle.dp(100, VLCStyle.scale)
-            property int bufferAnimPosition: 0
+            // An int starts at zero; the animation is this property's value source.
+            property int bufferAnimPosition
             property int bufferFrames: 1000
             property alias animateLoading: loadingAnim.running
             property bool display: false

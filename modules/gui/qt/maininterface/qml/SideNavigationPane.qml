@@ -166,7 +166,7 @@ T.Pane {
                     property real preferredHeight: shouldShow ? VLCStyle.buttonHeightNavigationPane : 0.0
 
                     leftPadding: root.safeAreaLeftMargin + VLCStyle.margin_xsmall
-                    rightPadding: root.safeAreaRightMargin
+                    rightPadding: root.safeAreaRightMargin + (root.delegateShowText ? 0 : VLCStyle.margin_xsmall)
 
                     leftInset: root.safeAreaLeftMargin + implicitLeftInset
                     rightInset: root.safeAreaRightMargin + implicitRightInset
@@ -268,7 +268,7 @@ T.Pane {
                 Layout.preferredHeight: VLCStyle.buttonHeightNavigationPane
 
                 leftPadding: root.safeAreaLeftMargin + VLCStyle.margin_xsmall
-                rightPadding: root.safeAreaRightMargin
+                rightPadding: root.safeAreaRightMargin + (root.delegateShowText ? 0 : VLCStyle.margin_xsmall)
 
                 leftInset: root.safeAreaLeftMargin + implicitLeftInset
                 rightInset: root.safeAreaRightMargin + implicitRightInset
