@@ -22,6 +22,9 @@ are isolated test adapters. Option buttons stand in for backend-dependent
 menus, so these tests do not validate media decoding, popup menus, or the
 complete VLC application.
 
+Hosted checks run on Windows and Linux with both Qt 6.8.3 (the native Windows
+dependency bundle's version) and Qt 6.11.2. Local requirements default to 6.11.2.
+
 The checks cover resizing, profile replacement, empty/crowded profiles,
 100%/150%/200% scaling, Day/Night selection, Tab order, pointer/keyboard seeking,
 chaptered timelines, Play/Pause and Stop holds, custom accent contrast, palette
