@@ -1,0 +1,54 @@
+name: VLC redesign Windows portable build
+
+on:
+  push:
+    branches: [redesign/juxtopposed-ui]
+    paths:
+      - '.github/workflows/vlc-win64-build.yml'
+      - '.github/scripts/build-win64.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vlc-win64-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  win64:
+    if: github.repository == 'Viswa220522/vlc'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      # VideoLAN's win64 CI image from extras/ci/gitlab-ci.yml, pinned by digest.
+      image: registry.videolan.org/vlc-debian-win64-posix@sha256:8e83e800036f8f4a6da1031a6b80c2b5bad8337259c072ffa22398baaeaad880
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          # get-contrib-sha.sh needs history to find the matching upstream bundle.
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Compile VLC and package the Qt interface
+        run: bash .github/scripts/build-win64.sh
+      - name: Upload portable Windows package
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: vlc-redesign-win64-${{ github.sha }}
+          path: build-output/*
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+      - name: Upload build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: vlc-win64-build-logs-${{ github.sha }}
+          path: |
+            .build/win64-build.log
+            .build/win64/config.log
+          if-no-files-found: warn
+          retention-days: 14

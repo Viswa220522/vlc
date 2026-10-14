@@ -1,5 +1,12 @@
 # VLC media player
 
+This personal fork contains a Qt/QML interface redesign inspired by
+[Juxtopposed (@juxtopposed)](https://www.youtube.com/@juxtopposed). Thank you for
+[I Redesigned VLC After 25 Years](https://www.youtube.com/watch?v=ERFeOgqk324) and
+[the community design](https://www.figma.com/community/file/1691465999134370980).
+See [the redesign notes](doc/juxtopposed-redesign.md) for scope, theme settings,
+and validation status.
+
 **VLC** is a libre and open source **media player** and **multimedia engine**,
 focused on **playing everything**, and **running everywhere**.
 
