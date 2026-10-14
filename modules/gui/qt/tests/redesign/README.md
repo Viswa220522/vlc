@@ -15,7 +15,9 @@ modules; this is not a clean, fully typed VLC lint run.
 Production control bar, control layout, repeaters, timeline, Play/Pause, shared
 widgets, and style files are loaded without rewriting them. A hash manifest
 records the source files used. The tests use real Qt Quick layout, rendering,
-pointer, and keyboard events. VLC backend services and native attached types
+pointer, and keyboard events. VLC's bundled icon font is loaded locally and
+glyphs are read from the native icon header; no font installation is required.
+VLC backend services and native attached types
 are isolated test adapters. Option buttons stand in for backend-dependent
 menus, so these tests do not validate media decoding, popup menus, or the
 complete VLC application.

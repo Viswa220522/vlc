@@ -234,19 +234,18 @@ QtObject {
         readonly property color neutral: root.accent
     }
 }''',
-        "VLCIcons": '''pragma Singleton
-import QtQuick
-QtObject {
-    property string fontFamily: "Arial"
-    property string play_filled: "▶"
-    property string pause_filled: "Ⅱ"
-}''',
+        "VLCIcons": '',  # Generated from the native icon header below.
     }
     controls = {
         "PlayButton": QT / "player/qml/controlbarcontrols/PlayButton.qml",
         "FixtureControl": '''import QtQuick
-import QtQuick.Controls.Basic
-Button { implicitWidth: 32; implicitHeight: 32; text: "•"; activeFocusOnTab: true }''',
+import VLC.Style
+import VLC.Widgets as Widgets
+Widgets.IconToolButton {
+    text: VLCIcons.ellipsis
+    description: "Fixture option (test backend)"
+    activeFocusOnTab: true
+}''',
         "PlayerControlbarModel": '''import QtQuick
 import QtQml.Models
 QtObject {
@@ -339,9 +338,23 @@ QtObject {
     }
     function stop() { stops++; Player.playingState = Player.PLAYING_STATE_STOPPED }
 }'''}
+    icon_header = QT / "style/vlcicons.hpp"
+    icon_glyphs = re.findall(r"QChar (\w+)\{ u'\\u([0-9a-f]{4})'", icon_header.read_text(encoding="utf-8"))
+    if not icon_glyphs:
+        raise AssertionError("No native icon glyphs found in vlcicons.hpp")
+    style["VLCIcons"] = '''pragma Singleton
+import QtQuick
+QtObject {
+    property FontLoader loader: FontLoader { source: "VLCIcons.ttf" }
+    readonly property string fontFamily: loader.name
+''' + "\n".join(f'    readonly property string {name}: "\\u{code}"' for name, code in icon_glyphs) + "\n}"
     for module, sources in [("MainInterface", main), ("Style", style), ("PlayerControls", controls),
                             ("Player", player), ("Util", util), ("Widgets", widgets), ("Playlist", playlist)]:
         manifest.update(write_module(base, module, sources))
+    icon_font = QT / "pixmaps/VLCIcons.ttf"
+    (base / "VLC/Style/VLCIcons.ttf").write_bytes(icon_font.read_bytes())
+    for source in (icon_font, icon_header):
+        manifest[str(source.relative_to(REPO))] = hashlib.sha256(source.read_bytes()).hexdigest()
     return manifest
 
 
@@ -375,7 +388,7 @@ Window {
         identifier: 0
     }
     PlayButton { id: play; x: 24; y: 24; activeFocusOnTab: true }
-    Widgets.IconToolButton { x: 100; y: 24; text: "•"; description: "Options" }
+    Widgets.IconToolButton { x: 100; y: 24; text: VLCIcons.settings; description: "Options" }
     Widgets.ButtonExt { x: 160; y: 24; text: "Open" }
     Widgets.TextFieldExt { x: 280; y: 24; width: 240; placeholderText: "Search" }
     SliderBar { id: standaloneSlider; x: 600; y: 24; width: 300; compact: root.standaloneCompact; barHeight: compact ? 28 : 4 }
