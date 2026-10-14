@@ -35,7 +35,11 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Compile VLC and package the Qt interface
-        run: bash .github/scripts/build-win64.sh
+        run: |
+          # Checkout and build use different HOME paths inside this container.
+          # Trust only this runner's checkout, whose mount is owned by the host UID.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          bash .github/scripts/build-win64.sh
       - name: Upload portable Windows package
         uses: actions/upload-artifact@v7.0.2
         with:
