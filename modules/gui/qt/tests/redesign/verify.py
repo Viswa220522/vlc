@@ -438,7 +438,7 @@ def main():
     qml_files = [str(QT / p) for p in CHECKED_QML]
     tool = Path(PySide6.__file__).parent / ("qmllint.exe" if os.name == "nt" else "qmllint")
     lint = subprocess.run([str(tool), "--ignore-settings", "--max-warnings", "-1",
-                           "--duplicate-property-binding", "error", "--duplicated-name", "error",
+                           "--duplicate-property-binding", "warning", "--duplicated-name", "warning",
                            "--json", str(args.output / "syntax-lint.json"), *qml_files], capture_output=True, text=True)
     (args.output / "syntax-lint.log").write_text(lint.stdout + lint.stderr, encoding="utf-8")
     if lint.returncode:
@@ -451,7 +451,10 @@ def main():
         raise AssertionError("qmllint accepted deliberately invalid QML")
     lint_report = json.loads((args.output / "syntax-lint.json").read_text(encoding="utf-8"))
     lint_diagnostics = [w for f in lint_report["files"] for w in f.get("warnings", [])]
-    lint_errors = [w for w in lint_diagnostics if w["type"] == "error"]
+    # Qt 6.8 permits only disable/info/warning for diagnostic categories. Enforce
+    # duplicates here so older Qt versions retain the same failure policy.
+    lint_errors = [w for w in lint_diagnostics if w["type"] == "error"
+                   or w.get("id") in ("duplicate-property-binding", "duplicated-name")]
     if lint_errors:
         raise AssertionError(lint_errors)
     print(f"PASS: Qt QML syntax/duplicate-binding checks ({len(qml_files)} source files); full diagnostics retained in syntax-lint.json", flush=True)
