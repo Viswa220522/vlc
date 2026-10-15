@@ -12,6 +12,7 @@ from pathlib import Path
 import subprocess
 import sys
 from xml.sax.saxutils import escape
+import xml.etree.ElementTree as ET
 
 import verify as v
 from PySide6.QtCore import QByteArray, QBuffer, QIODevice, QResource, QSize, QUrlQuery
@@ -164,7 +165,7 @@ QtObject {
     effects.write_text(effects.read_text().replace("enum Effect { TintedImage }", "enum Effect { TintedImage, DesignVolume }")
         .replace('"image://effects/TintedImage?path="', '(effect === EffectsImageProvider.DesignVolume ? "image://effects/DesignVolume?path=" : "image://effects/TintedImage?path=")')
         .replace('+ "&color=" + encodeURIComponent(properties.color)', '+ "&color=" + encodeURIComponent(properties.color) + "&volume=" + (properties.volume || 0)'))
-    assets = list((v.QT / "pixmaps/juxtopposed").glob("*.png"))
+    assets = list((v.QT / "pixmaps/juxtopposed").glob("*.svg"))
     qrc = output / "reference-assets.qrc"
     drag_adapter = output / "csd-drag-adapter.qml"
     drag_adapter.write_text("import QtQuick\nItem { property bool csdMenuVisible: false }")
@@ -173,7 +174,7 @@ QtObject {
         + '</qresource><qresource prefix="/qt/qml/VLC/Widgets">'
         + f'<file alias="CSDTitlebarTapNDrapHandler.qml">{escape(drag_adapter.as_posix())}</file>'
         + '</qresource></RCC>')
-    rcc = Path(v.PySide6.__file__).parent / ("rcc.exe" if sys.platform == "win32" else "rcc")
+    rcc = Path(v.PySide6.__file__).parent / ("rcc.exe" if sys.platform == "win32" else "Qt/libexec/rcc")
     subprocess.run([str(rcc), "--binary", str(qrc), "-o", str(output / "reference-assets.rcc")], check=True)
     if not QResource.registerResource(str(output / "reference-assets.rcc")):
         raise AssertionError("Could not register the reference asset bundle")
@@ -262,6 +263,22 @@ def main():
             raise AssertionError(name)
         tests.append(name)
         print("PASS:", name, flush=True)
+    for vector in sorted((v.QT / "pixmaps/juxtopposed").glob("*.svg")):
+        if vector.name == "volume.svg":
+            continue  # The dynamic gauge needs the normalization tested below.
+        document = ET.parse(vector).getroot()
+        check(f"{vector.name} contains vector artwork", all(
+            element.tag.rsplit('}', 1)[-1] != 'image' for element in document.iter()))
+        width, height = float(document.get("width")), float(document.get("height"))
+        for density in (1, 1.5, 2, 3):
+            requested = QSize(round(width * density), round(height * density))
+            reader = QImageReader(str(vector), b"SVG")
+            reader.setScaledSize(requested)
+            rendered = reader.read()
+            if rendered.size() != requested or not any(
+                rendered.pixelColor(x, y).alpha() for x in range(rendered.width()) for y in range(rendered.height())):
+                raise AssertionError(f"{vector.name} failed at pixel density {density}: {reader.errorString()}")
+        check(f"{vector.name} renders at 1x/1.5x/2x/3x without diagnostics", not messages)
     def item(name):
         result = root.findChild(v.QQuickItem, name)
         if result is None:

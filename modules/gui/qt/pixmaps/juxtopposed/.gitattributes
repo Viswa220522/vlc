@@ -1,0 +1,2 @@
+# Keep vector provenance hashes identical on Windows and Unix checkouts.
+*.svg text eol=lf

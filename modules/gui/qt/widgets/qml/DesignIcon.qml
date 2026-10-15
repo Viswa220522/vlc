@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Original icon artwork: Juxtopposed's VLC Redesign (Community).
 import QtQuick
+import QtQuick.Window
 import VLC.Style
 import VLC.Util
 
@@ -16,9 +17,10 @@ Item {
     Image {
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
-        sourceSize: Qt.size(Math.ceil(width * 3), Math.ceil(height * 3))
+        sourceSize: Qt.size(Math.ceil(width * Screen.devicePixelRatio),
+                            Math.ceil(height * Screen.devicePixelRatio))
         source: root.name.length ? EffectsImageProvider.url(EffectsImageProvider.TintedImage, {
-            path: ":/juxtopposed/" + root.name + ".png",
+            path: ":/juxtopposed/" + (root.name === "volume" ? "volume-icon" : root.name) + ".svg",
             color: root.color
         }) : ""
     }

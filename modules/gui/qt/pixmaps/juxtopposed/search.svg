@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <g transform="translate(0 0) rotate(0 12 12)">
+    <g transform="translate(0 0) rotate(0 12 12)">
+      <g transform="translate(4 4) rotate(0 7.5 7.5)">
+        <g transform="scale(1 1) translate(-0 -0)">
+          <path d="M6.353 12.706C2.844 12.706 0.000 9.862 0.000 6.353C0.000 2.844 2.844 0.000 6.353 0.000C9.862 0.000 12.706 2.844 12.706 6.353C12.706 8.107 11.995 9.695 10.845 10.845C9.695 11.995 8.107 12.706 6.353 12.706ZM10.845 10.845C10.845 10.845 15.000 15.000 15.000 15.000" fill="none" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -791,38 +791,38 @@ ui_%.h: %.ui
 
 libqt_plugin_la_RES = \
 	pixmaps/juxtopposed/sources.json \
-	pixmaps/juxtopposed/divider.png \
+	pixmaps/juxtopposed/divider.svg \
 	pixmaps/juxtopposed/volume.svg \
-	pixmaps/juxtopposed/pause.png \
-	pixmaps/juxtopposed/add.png \
-	pixmaps/juxtopposed/audio.png \
-	pixmaps/juxtopposed/back.png \
-	pixmaps/juxtopposed/browser-more.png \
-	pixmaps/juxtopposed/close.png \
-	pixmaps/juxtopposed/cone.png \
-	pixmaps/juxtopposed/expand.png \
-	pixmaps/juxtopposed/folder.png \
-	pixmaps/juxtopposed/fullscreen.png \
-	pixmaps/juxtopposed/home.png \
-	pixmaps/juxtopposed/list.png \
-	pixmaps/juxtopposed/maximize.png \
-	pixmaps/juxtopposed/minimize.png \
-	pixmaps/juxtopposed/more.png \
-	pixmaps/juxtopposed/music.png \
-	pixmaps/juxtopposed/network.png \
-	pixmaps/juxtopposed/next.png \
-	pixmaps/juxtopposed/play.png \
-	pixmaps/juxtopposed/playlists.png \
-	pixmaps/juxtopposed/previous.png \
-	pixmaps/juxtopposed/queue.png \
-	pixmaps/juxtopposed/recent.png \
-	pixmaps/juxtopposed/search.png \
-	pixmaps/juxtopposed/settings.png \
-	pixmaps/juxtopposed/sidebar.png \
-	pixmaps/juxtopposed/sort.png \
-	pixmaps/juxtopposed/subtitles.png \
-	pixmaps/juxtopposed/videos.png \
-	pixmaps/juxtopposed/volume.png \
+	pixmaps/juxtopposed/pause.svg \
+	pixmaps/juxtopposed/add.svg \
+	pixmaps/juxtopposed/audio.svg \
+	pixmaps/juxtopposed/back.svg \
+	pixmaps/juxtopposed/browser-more.svg \
+	pixmaps/juxtopposed/close.svg \
+	pixmaps/juxtopposed/cone.svg \
+	pixmaps/juxtopposed/expand.svg \
+	pixmaps/juxtopposed/folder.svg \
+	pixmaps/juxtopposed/fullscreen.svg \
+	pixmaps/juxtopposed/home.svg \
+	pixmaps/juxtopposed/list.svg \
+	pixmaps/juxtopposed/maximize.svg \
+	pixmaps/juxtopposed/minimize.svg \
+	pixmaps/juxtopposed/more.svg \
+	pixmaps/juxtopposed/music.svg \
+	pixmaps/juxtopposed/network.svg \
+	pixmaps/juxtopposed/next.svg \
+	pixmaps/juxtopposed/play.svg \
+	pixmaps/juxtopposed/playlists.svg \
+	pixmaps/juxtopposed/previous.svg \
+	pixmaps/juxtopposed/queue.svg \
+	pixmaps/juxtopposed/recent.svg \
+	pixmaps/juxtopposed/search.svg \
+	pixmaps/juxtopposed/settings.svg \
+	pixmaps/juxtopposed/sidebar.svg \
+	pixmaps/juxtopposed/sort.svg \
+	pixmaps/juxtopposed/subtitles.svg \
+	pixmaps/juxtopposed/videos.svg \
+	pixmaps/juxtopposed/volume-icon.svg \
 	pixmaps/fonts/dmmono/DMMono-Light.ttf \
 	pixmaps/fonts/dmmono/DMMono-Medium.ttf \
 	pixmaps/fonts/dmmono/DMMono-Regular.ttf \

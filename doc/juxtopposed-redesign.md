@@ -16,8 +16,12 @@ assets. The earlier palette-only adaptation is not a complete implementation.
 - Native 54 px playback strip: 130 px transport, flexible timeline with 76 px time
   fields, 120 px volume, 114 px options, and 30 px queue. Group gaps and outer
   horizontal padding are 20 px. Play/Pause is 54 ? 28 px.
-- Original exported icons; Inter and DM Mono bundled privately with OFL notices.
+- Original vector icons in SVG; Inter and DM Mono bundled privately with OFL notices.
   Playback timestamps use Inter, as specified by the supplied player layers.
+  SVG paths retain the design's geometry. CSS wrapper positions and rotations
+  are flattened to SVG transforms; strokes scale with the artwork. The renderer
+  tints vectors after rendering them at the display's physical pixel density.
+  The new interface has no PNG icon resources or whole-screen image substitutes.
 - The original volume SVG drives a live level indicator. Runtime normalization
   handles Qt's luminance masks and legacy SVG color syntax without redrawing
   the artwork.
@@ -58,12 +62,13 @@ tests decoded audio and an image, but found an omitted shared GCC runtime and
 shutdown callbacks accessing deleted QML objects. Packaging and callback fixes
 are in the current work and require another native run.
 
-The latest local checks pass 35 existing component cases and 31 reference cases,
+The latest local checks pass 35 existing component cases and 93 reference cases,
 with zero runtime Qt warnings/errors. The reference cases exercise the actual
 production title bar, navigation, browser, playback strip, volume widget, and
 New Playlist dialog with isolated VLC service adapters. They check reference
 geometry, button commands, seeking focus, playlist navigation/creation, input
-validation, volume rendering, and captures. These adapters do not validate the
+validation, volume rendering, and captures. Every icon is checked for vector
+content and rendered at 1x, 1.5x, 2x, and 3x pixel densities. These adapters do not validate the
 C++ backend or native system menus/window actions.
 
 `qmllint` parses 26 affected QML files with no syntax or duplicate-binding/name

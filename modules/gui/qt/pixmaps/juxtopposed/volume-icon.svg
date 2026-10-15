@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <g transform="translate(0 0) rotate(0 12 12)">
+    <g transform="translate(0 0) rotate(180 12 12)">
+      <g transform="translate(0 0) rotate(0 12 12)">
+        <g transform="scale(1 1) translate(-0 -0)">
+          <path transform="matrix(-1 0 0 -1 20 20)" d="M0.547 4.294C0.547 4.294 7.547 0.738 7.547 0.738C7.857 0.581 8.227 0.595 8.523 0.777C8.819 0.959 9.000 1.282 9.000 1.630C9.000 1.630 9.000 8.000 9.000 8.000C9.000 8.000 9.000 14.370 9.000 14.370C9.000 14.718 8.819 15.041 8.523 15.223C8.227 15.405 7.857 15.419 7.547 15.262C7.547 15.262 0.547 11.706 0.547 11.706C0.211 11.536 0.000 11.191 0.000 10.815C0.000 10.815 0.000 8.000 0.000 8.000C0.000 8.000 0.000 5.185 0.000 5.185C-0.000 4.809 0.211 4.464 0.547 4.294Z" fill="none" stroke="#8F8F8F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path transform="matrix(-1 0 0 -1 8 13)" d="M0.000 0.000C0.000 0.000 0.000 2.000 0.000 2.000" fill="none" stroke="#8F8F8F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path transform="matrix(-1 0 0 -1 5 14)" d="M0.000 0.000C0.000 0.000 0.000 4.000 0.000 4.000" fill="none" stroke="#8F8F8F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path transform="matrix(-1 0 0 -1 2 16)" d="M0.000 0.000C0.000 0.000 0.000 8.000 0.000 8.000" fill="none" stroke="#8F8F8F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

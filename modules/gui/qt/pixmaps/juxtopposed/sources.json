@@ -4,190 +4,221 @@
   "reference": "http://127.0.0.1:29978/file/01M4T9D3SQKKJGSXMQFSSRAY0A/p-1-0",
   "assets": [
     {
-      "file": "add.png",
+      "file": "add.svg",
       "node": "X86-0",
-      "scale": 3,
-      "sha256": "4cbc95ca6a807cb58b52c49d479f1c41e12bf34afbce58f9406f0b2cbee66c9a"
+      "format": "svg",
+      "sha256": "45889d5db7a12394a467787acf79d7d7373cdb6950245e7dd50bdece5e514427",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "audio.png",
+      "file": "audio.svg",
       "node": "XCB-0",
-      "scale": 3,
-      "sha256": "d93ab5aa81206ccf80879c3511da13572856f2ec93b1f12e301fc5da72348beb"
+      "format": "svg",
+      "sha256": "5c5d51e633019b6c162efcf0a4ffaa5fbdd110daccb17ddbad071e30bc0c8569",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "back.png",
+      "file": "back.svg",
       "node": "X8F-0",
-      "scale": 3,
-      "sha256": "716ed1f8df77f849137a4fa081bd50eab3a93e5e5c0a8eaa585a2fd9645279df"
+      "format": "svg",
+      "sha256": "62e65742fa046d1282b8c5445f61bf0db5b770b6342fc7d96ea65b26c235e95c",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "browser-more.png",
+      "file": "browser-more.svg",
       "node": "X8Q-0",
-      "scale": 3,
-      "sha256": "a61f2dff1ebe015b851034ce48332d6f5684b471054373cb665eb215524f4d0b"
+      "format": "svg",
+      "sha256": "a611a0c45957d5eea03cccb347747424c19d71fb246d96b32acf408ba383d1cd",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "close.png",
+      "file": "close.svg",
       "node": "X6O-0",
-      "scale": 3,
-      "sha256": "7f0342c5973d6e064bee8385dee914606b9ab6b65494c0c248dfb216d64a9fcf"
+      "format": "svg",
+      "sha256": "59c77f4f8afda60441899340161c91c801afe41a3b35dba4097f082751bdf45c",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "cone.png",
+      "file": "cone.svg",
       "node": "X5F-0",
-      "scale": 3,
-      "sha256": "4193183119d47a0d94480f2b702af8857516d7338b7b0282362f914d3387b9dd"
+      "format": "svg",
+      "sha256": "1f4c77a1a7f9d941d2b0837cae514e2c7e3948c9c2b9189e446b2c62b30e145a",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "divider.png",
+      "file": "divider.svg",
       "node": "X60-0",
-      "scale": 3,
-      "sha256": "68c834cc0bb4014b404b59a4e22b85f6d27e468472a868ac54598e5ec5e9a9ea"
+      "format": "svg",
+      "sha256": "e775e861b13b0a89882e575ea2c2fa1f9cef546fc7e2258f79e8f9817b08177d",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "expand.png",
+      "file": "expand.svg",
       "node": "X8W-0",
-      "scale": 3,
-      "sha256": "48c9350a1abcda66dcadb2246425198540fe89a24e9bc79209b0307da1b3661f"
+      "format": "svg",
+      "sha256": "5571ceaaada33c07fb66a950f81c480053dcd2f03ecbceb68892992e497d7544",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "folder.png",
+      "file": "folder.svg",
       "node": "X65-0",
-      "scale": 3,
-      "sha256": "0dea126a584372c3f940ed0ee19c694d30f9c9a6b77d58f55e6ed9e2349f9373"
+      "format": "svg",
+      "sha256": "3f37f3f972e3d39968cf485c8e07a2e3f8138afb6dc4de3d69fe6c9e7084121b",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "fullscreen.png",
+      "file": "fullscreen.svg",
       "node": "X6K-0",
-      "scale": 3,
-      "sha256": "d2d342564334d30f5e94f1673d034c4c54644555c8b8e0db1f7dac17fb59baff"
+      "format": "svg",
+      "sha256": "62997bdc0bfec7f6b5e936a17358d255b2c754fd2e686498ad79959515fefecf",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "home.png",
+      "file": "home.svg",
       "node": "X6W-0",
-      "scale": 3,
-      "sha256": "48466735fd5fdd38838ca6bdc9c33e7fb3101ef4ebc55d071fd184bcdc28e8e0"
+      "format": "svg",
+      "sha256": "fdf0a25e5491afa6bc8609033e4322ebc706e5c423dee56c32317b44b74cca19",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "list.png",
+      "file": "list.svg",
       "node": "X98-0",
-      "scale": 3,
-      "sha256": "c21ca6a04225281db1af97800ea7bee178f9f0c06577e4726cd5a1a4ea4bde63"
+      "format": "svg",
+      "sha256": "de981e3cfa560fd801bd5942720620ae874cb6d52a3c87bc4efcd93abf956f72",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "maximize.png",
+      "file": "maximize.svg",
       "node": "X6G-0",
-      "scale": 3,
-      "sha256": "cc84aa7bda2416f3bedd9dd5689d8d1322abd7633213deda7d008cbc51671ec7"
+      "format": "svg",
+      "sha256": "2cb9d8fe4f14b41ff5b11f78a98910b6340f276057b4d8ed650b2d446798dd2f",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "minimize.png",
+      "file": "minimize.svg",
       "node": "X6C-0",
-      "scale": 3,
-      "sha256": "8db20e611301db2c974dbefdda5f9be28e5e49e8e92632467f0b1407d8c26602"
+      "format": "svg",
+      "sha256": "3ed25b914377d69829340556060ad15909aef4edd119bff7e9c9cbfc92ec49de",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "more.png",
+      "file": "more.svg",
       "node": "X5N-0",
-      "scale": 3,
-      "sha256": "a28e4a9294e76362da5f3b4c5bfdcf693e6128b07e7387e96fc29835daac0313"
+      "format": "svg",
+      "sha256": "7ec4dd60841effa840f1e7c9bd3164aabf25d26de0c5b1a03959e250fed6ff56",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "music.png",
+      "file": "music.svg",
       "node": "X7B-0",
-      "scale": 3,
-      "sha256": "c114d84c56ac094ad4a2671f4864284ed836bd9b0fa31b59c7c96af932c6dfad"
+      "format": "svg",
+      "sha256": "d56f0488ab5659ed178e9955ae0dc5dd0217e9873ee29c3d3c69bce6ed5e5e24",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "network.png",
+      "file": "network.svg",
       "node": "X7I-0",
-      "scale": 3,
-      "sha256": "a8cfd1f8aa592d326a7569f551abbdc41dc201c524f9b8cb763434e3aa29562b"
+      "format": "svg",
+      "sha256": "9cdb7bc1c5cc042906a46309240cf0ce7f0858cdd6326ca522c2712a07c53ff0",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "next.png",
+      "file": "next.svg",
       "node": "XBC-0",
-      "scale": 3,
-      "sha256": "848ab7fd9d2a614a2d79f69fd0d00e6f688d42b7ba4d1b9643dd7870819f4078"
+      "format": "svg",
+      "sha256": "7d7217caecf2ac5bcb2813a7456f00e429cef9bcdae0f4355c861b8a5f51217c",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "pause.png",
+      "file": "pause.svg",
       "node": "WD8-0",
-      "scale": 3,
-      "sha256": "e09209ec3f126c423a405c8fde2e3d31616484b108ad86c521bf7cf6200545e0"
+      "format": "svg",
+      "sha256": "7dd1141a502154d4025a72622538af0be749ca6486fde8d705f0fe34166d1f1b",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "play.png",
+      "file": "play.svg",
       "node": "XB6-0",
-      "scale": 3,
-      "sha256": "1aba943356c392148ddb1bbb6ac5d11445125cdb4236fefce8a8cc005e56d656"
+      "format": "svg",
+      "sha256": "fa69efa0d2e660c7663019d67d76c0ae17890d3ae84084b9d7278dfd978ea689",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "playlists.png",
+      "file": "playlists.svg",
       "node": "X7Q-0",
-      "scale": 3,
-      "sha256": "ee2766273e402583c166f827323eb7a94b43e1207e3fb3f16850c00f3e07f8e0"
+      "format": "svg",
+      "sha256": "ac289a905da06d5989d019f26ad2ab2e2d142eee21395a345c5d147d7d4a86ef",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "previous.png",
+      "file": "previous.svg",
       "node": "XAW-0",
-      "scale": 3,
-      "sha256": "ca57e7f66d3fc9bb9443238d5498d8246d1aedac5bd0e09204e27e71d1e39c46"
+      "format": "svg",
+      "sha256": "d95d1d7de80c289ff49134c356158a83c189ae72ff4985ab260abc915d7e9893",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "queue.png",
+      "file": "queue.svg",
       "node": "XCZ-0",
-      "scale": 3,
-      "sha256": "99e0ea704e877b9d4e6276281d8f2ef6dce8663c9a9cd53b197fc2430e0f9826"
+      "format": "svg",
+      "sha256": "7e76980fb60a6f3d489df8372ce0173d622b795d56cfae8c24b81c153e4e6281",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "recent.png",
+      "file": "recent.svg",
       "node": "X80-0",
-      "scale": 3,
-      "sha256": "5f977b659ea981487adc03ce981a3dab44db93d6db33a6820b94368a2eb61a68"
+      "format": "svg",
+      "sha256": "f5bbace5d7bfb2f8c36e4c902c3a68556a59debe830de195864cf0dfea23e29c",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "search.png",
+      "file": "search.svg",
       "node": "X9F-0",
-      "scale": 3,
-      "sha256": "b48eb0820d04680c89f3cec55a0c8387ae76a0769513c33ef77d73da9c6be975"
+      "format": "svg",
+      "sha256": "a3cb24246103ccbf733003ed39f90a2373a87129dfbdcfb8ccb6991a0a373414",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "settings.png",
+      "file": "settings.svg",
       "node": "XCR-0",
-      "scale": 3,
-      "sha256": "2e24172886f03f9f8e4a349c9a452b109996707dc4d73ad194e0fd2f6094cf78"
+      "format": "svg",
+      "sha256": "99c49bf105e23c61e0beb38db97239251021420a9f0564793d4089277282e11d",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "sidebar.png",
+      "file": "sidebar.svg",
       "node": "X5T-0",
-      "scale": 3,
-      "sha256": "c968d0bfa1e457c7627fa74e953c82f1c9e3f9e9b392c5df7c5d479487ca7c70"
+      "format": "svg",
+      "sha256": "dbaa08cd3a58c7a1ab33dd80449d2809ea2b1bee3561bfaab6d663fb0ac548f6",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "sort.png",
+      "file": "sort.svg",
       "node": "X93-0",
-      "scale": 3,
-      "sha256": "6342efcccbcc4a3afe0c7a1eebf4e68c6ee24dfb38b7f629cd3a7353e84782a4"
+      "format": "svg",
+      "sha256": "bdbad32203e685a84c5b13de6f17847dce79bcf662004cd3c03e7a70bf42773e",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "subtitles.png",
+      "file": "subtitles.svg",
       "node": "XCK-0",
-      "scale": 3,
-      "sha256": "f69f23811fd7ef2089ebe9078fa64c18fd6b210f7755f14aeaf3bdcf765d74b4"
+      "format": "svg",
+      "sha256": "9977f4aa20bd9af045af351532561e55ce9cf807a2f9748843f8af49619efac2",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "videos.png",
+      "file": "videos.svg",
       "node": "X73-0",
-      "scale": 3,
-      "sha256": "14c0d9ac3b364b0533b0da7c3a419c11d6d2434f6319c021bb15925aa36195c2"
+      "format": "svg",
+      "sha256": "68f52fc6f394c5d262aca03246645d942b5142ebf1613fb15c818e05858fd21a",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
-      "file": "volume.png",
+      "file": "volume-icon.svg",
       "node": "XBU-0",
-      "scale": 3,
-      "sha256": "45a631eda325ac1c2f9cf672d1458c72880d442f0a1ec3c2eaa5a5d3193bd9b9"
+      "format": "svg",
+      "sha256": "ed633bd25c4eb69493c346b11a94f25ec83ccd59560d4aab932411434659cc9e",
+      "conversion": "Original SVG paths; CSS wrapper positions and rotations flattened to SVG transforms. Strokes scale with the artwork."
     },
     {
       "file": "volume.svg",

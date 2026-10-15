@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <g transform="translate(0 0) rotate(0 12 12)">
+    <g transform="translate(0 0) rotate(180 12 12)">
+      <g transform="translate(21 21) rotate(180 0 0)">
+        <g transform="scale(1 1) translate(-0 -0)">
+          <g transform="translate(0 18) scale(1 -1)">
+            <path d="M18.000 7.606C18.000 7.606 18.000 15.000 18.000 15.000C18.000 16.657 16.657 18.000 15.000 18.000C15.000 18.000 3.000 18.000 3.000 18.000C1.343 18.000 0.000 16.657 0.000 15.000C0.000 15.000 0.000 7.606 0.000 7.606C-0.000 6.602 0.501 5.666 1.336 5.109C1.336 5.109 7.336 1.109 7.336 1.109C8.344 0.438 9.656 0.438 10.664 1.109C10.664 1.109 16.664 5.109 16.664 5.109C17.499 5.666 18.000 6.602 18.000 7.606Z" fill="none" stroke="#8F8F8F" stroke-width="1.5" />
+          </g>
+        </g>
+      </g>
+      <g transform="translate(14 18) rotate(180 0 0)">
+        <rect width="4" height="6" rx="1" fill="#8F8F8F" />
+      </g>
+    </g>
+  </g>
+</svg>

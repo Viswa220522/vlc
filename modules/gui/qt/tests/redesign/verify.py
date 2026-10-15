@@ -26,7 +26,7 @@ if os.name == "nt":
 
 import PySide6
 from PySide6.QtCore import QObject, Property, Signal, Slot, QPointF, QSize, Qt, QUrl, QUrlQuery, QtMsgType, qInstallMessageHandler
-from PySide6.QtGui import QGuiApplication, QColor, QImage, QPainter
+from PySide6.QtGui import QGuiApplication, QColor, QImage, QImageReader, QPainter
 from PySide6.QtQml import QQmlEngine, QQmlComponent, QJSValue, QmlAttached, QmlNamedElement
 from PySide6.QtQuick import QQuickItem, QQuickImageProvider
 from PySide6.QtTest import QTest
@@ -446,15 +446,15 @@ class DesignImageProvider(QQuickImageProvider):
     def requestImage(self, identifier, _size, requested):
         query = QUrlQuery(QUrl(identifier))
         name = Path(query.queryItemValue("path", QUrl.FullyDecoded)).name
-        image = QImage(str(QT / "pixmaps/juxtopposed" / name)).convertToFormat(QImage.Format_ARGB32_Premultiplied)
+        reader = QImageReader(str(QT / "pixmaps/juxtopposed" / name), b"SVG")
+        reader.setScaledSize(requested)
+        image = reader.read().convertToFormat(QImage.Format_ARGB32_Premultiplied)
         if image.isNull():
             return image
         painter = QPainter(image)
         painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
         painter.fillRect(image.rect(), QColor(query.queryItemValue("color", QUrl.FullyDecoded)))
         painter.end()
-        if requested.isValid():
-            image = image.scaled(requested, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         return image
 
 

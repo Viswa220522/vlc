@@ -51,7 +51,9 @@ FocusScope {
                 anchors.centerIn: parent
                 width: VLCStyle.dp(24, VLCStyle.scale)
                 height: width
-                source: "qrc:/juxtopposed/cone.png"
+                source: "qrc:/juxtopposed/cone.svg"
+                sourceSize: Qt.size(Math.ceil(width * Screen.devicePixelRatio),
+                                    Math.ceil(height * Screen.devicePixelRatio))
                 fillMode: Image.PreserveAspectFit
                 Accessible.ignored: true
             }

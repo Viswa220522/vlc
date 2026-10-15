@@ -246,9 +246,10 @@ QImage EffectsImageProvider::requestImage(const QString &id, QSize *size, const 
             const qreal volume = qBound(0.0, settings.value("volume").toDouble(), 2.0);
             // Keep the original paths and gradient. Only the existing level mask
             // changes with playback volume. The reference mask is 33px at 75%.
-            svg.replace("layer-name=\"Rectangle 7\"",
-                        QByteArray("transform=\"scale(") + QByteArray::number(volume * 88.0 / 66.0)
-                            + ",1)\" layer-name=\"Rectangle 7\"");
+            QByteArray maskTransform("transform=\"scale(");
+            maskTransform.append(QByteArray::number(volume * 88.0 / 66.0));
+            maskTransform.append(",1)\" layer-name=\"Rectangle 7\"");
+            svg.replace("layer-name=\"Rectangle 7\"", maskTransform);
             // Qt SVG uses luminance masks and legacy SVG color syntax. These
             // equivalent forms preserve the exported alpha mask and 20% overlay.
             svg.replace("fill=\"#262626\"", "fill=\"#ffffff\"");
@@ -265,9 +266,13 @@ QImage EffectsImageProvider::requestImage(const QString &id, QSize *size, const 
             // CPU composition works with both software and accelerated rendering.
             const auto settings = queryToVariantMap(query);
             const auto path = settings.value("path").toString();
-            if (!path.startsWith(":/juxtopposed/"))
+            if (!path.startsWith(":/juxtopposed/") || !path.endsWith(".svg"))
                 return {};
-            QImage image(path);
+            // Rasterize the vector at the requested physical pixel size before
+            // tinting, so display scaling never enlarges a small bitmap.
+            QImageReader reader(path, "SVG");
+            reader.setScaledSize(requestedSize);
+            QImage image = reader.read();
             if (image.isNull())
                 return {};
             image = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
@@ -275,9 +280,7 @@ QImage EffectsImageProvider::requestImage(const QString &id, QSize *size, const 
             painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
             painter.fillRect(image.rect(), QColor(settings.value("color").toString()));
             painter.end();
-            return requestedSize.isValid()
-                ? image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-                : image;
+            return image;
         }
         case EffectsImageProvider::RectDropShadow:
             effect = std::make_unique<RectDropShadowEffect>(queryToVariantMap(query));
