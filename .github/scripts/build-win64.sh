@@ -4,6 +4,9 @@
 set -euo pipefail
 export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
+# The portable validation build can capture its own Qt scene when explicitly
+# requested with VLC_QT_UI_TEST_OUTPUT. Ordinary source builds exclude the hook.
+export CPPFLAGS="${CPPFLAGS:-} -DVLC_QT_UI_TESTING"
 
 source_root=$(git rev-parse --show-toplevel)
 cd "$source_root"
@@ -63,8 +66,10 @@ if (( ${#packages[@]} != 1 )); then
     printf 'Expected one Windows ZIP; found %s\n' "${#packages[@]}" >&2
     exit 1
 fi
-python3 - "${packages[0]}" <<'PY'
+python3 - "${packages[0]}" "$source_root" <<'PY'
 import sys
+import subprocess
+from pathlib import Path
 import zipfile
 
 with zipfile.ZipFile(sys.argv[1]) as package:
@@ -77,7 +82,30 @@ with zipfile.ZipFile(sys.argv[1]) as package:
     if len(roots) != 1:
         raise SystemExit(f'Unexpected package roots: {roots}')
     root = roots.pop()
+# Some prebuilt contrib archives retain a shared GCC unwind dependency.
+# Include the matching target compiler runtime in the portable package.
+runtimes = []
+for name in ("libgcc_s_seh-1.dll", "libwinpthread-1.dll", "libstdc++-6.dll"):
+    result = subprocess.check_output(["x86_64-w64-mingw32-g++", "-print-file-name=" + name], text=True).strip()
+    path = Path(result)
+    if not path.is_file():
+        raise SystemExit(f"Target compiler runtime not found: {name} ({path})")
+    runtimes.append(path)
+source_root = Path(sys.argv[2])
+licenses = {path.name: path.read_bytes() for path in
+            (source_root / '.github/licenses/compiler-runtime').iterdir() if path.is_file()}
 with zipfile.ZipFile(sys.argv[1], 'a', compression=zipfile.ZIP_DEFLATED) as package:
+    existing = set(package.namelist())
+    for runtime in runtimes:
+        destination = f'{root}/{runtime.name}'
+        if destination not in existing:
+            package.write(runtime, destination)
+    for name, contents in licenses.items():
+        package.writestr(f'{root}/gcc-runtime-licenses/{name}', contents)
+    for family in ('inter', 'dmmono'):
+        package.write(source_root / f'modules/gui/qt/pixmaps/fonts/{family}/OFL.txt',
+                      f'{root}/design-font-licenses/{family}-OFL.txt')
+    package.write(source_root / 'doc/juxtopposed-redesign.md', f'{root}/JUXTOPPOSED-CREDITS.md')
     # VLC recognizes this directory and keeps configuration with the ZIP build.
     package.writestr(f'{root}/portable/vlc/vlc-qt-interface.ini',
                      '[MainWindow]\ncolor-scheme-index=2\n')

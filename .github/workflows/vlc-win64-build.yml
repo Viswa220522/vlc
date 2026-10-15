@@ -6,9 +6,14 @@ on:
     paths:
       - '.github/workflows/vlc-win64-build.yml'
       - '.github/scripts/build-win64.sh'
+      - '.github/licenses/**'
       - 'modules/gui/qt/**/*.qml'
       - 'modules/gui/qt/**/*.cpp'
       - 'modules/gui/qt/**/*.hpp'
+      - 'modules/gui/qt/assets.qrc'
+      - 'modules/gui/qt/Makefile.am'
+      - 'modules/gui/qt/meson.build'
+      - 'modules/gui/qt/pixmaps/**'
   workflow_dispatch:
 
 permissions:
