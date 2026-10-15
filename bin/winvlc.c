@@ -39,6 +39,7 @@
 #include <fcntl.h>
 #include <io.h>
 #include <shlobj.h>
+#include <wchar.h>
 
 #include "../lib/libvlc_internal.h"
 
@@ -83,6 +84,30 @@ static void vlc_kill(void *data)
     ReleaseSemaphore(*semp, 1, NULL);
 }
 
+#ifdef VLC_WIN32_SHARED_GCC_RUNTIME
+/* The portable validation bundle contains contrib plugins linked to shared
+ * GCC unwinding. Resolve that runtime from the executable directory without
+ * adding the directory to the process-wide DLL search path. Keep it loaded
+ * until process termination so plugins can also use it during shutdown. */
+static BOOL LoadCompilerRuntime(void)
+{
+    wchar_t path[32768];
+    const wchar_t runtime[] = L"libgcc_s_seh-1.dll";
+    const size_t capacity = sizeof(path) / sizeof(path[0]);
+    DWORD length = GetModuleFileNameW(NULL, path, (DWORD)capacity);
+    if (length == 0 || length >= capacity)
+        return FALSE;
+
+    wchar_t *name = wcsrchr(path, L'\\');
+    if (name == NULL || (size_t)(name + 1 - path) + sizeof(runtime) / sizeof(runtime[0]) > capacity)
+        return FALSE;
+
+    memcpy(name + 1, runtime, sizeof(runtime));
+    return LoadLibraryExW(path, NULL, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR |
+                                    LOAD_LIBRARY_SEARCH_SYSTEM32) != NULL;
+}
+#endif
+
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     LPSTR lpCmdLine,
                     int nCmdShow )
@@ -124,6 +149,15 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
      * Load DLLs from system32 before any other folder (when possible)
      */
     PrioritizeSystem32();
+
+#ifdef VLC_WIN32_SHARED_GCC_RUNTIME
+    if (!LoadCompilerRuntime())
+    {
+        fprintf(stderr, "Cannot load the bundled compiler runtime (Windows error %lu)\n",
+                GetLastError());
+        return 1;
+    }
+#endif
 
     /* Args */
     wchar_t **wargv = CommandLineToArgvW (GetCommandLine (), &argc);

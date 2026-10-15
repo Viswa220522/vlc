@@ -6,7 +6,7 @@ export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
 # The portable validation build can capture its own Qt scene when explicitly
 # requested with VLC_QT_UI_TEST_OUTPUT. Ordinary source builds exclude the hook.
-export CPPFLAGS="${CPPFLAGS:-} -DVLC_QT_UI_TESTING"
+export CPPFLAGS="${CPPFLAGS:-} -DVLC_QT_UI_TESTING -DVLC_WIN32_SHARED_GCC_RUNTIME"
 
 source_root=$(git rev-parse --show-toplevel)
 cd "$source_root"
