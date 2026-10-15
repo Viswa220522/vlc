@@ -19,7 +19,7 @@ Item {
         fillMode: Image.PreserveAspectFit
         sourceSize: Qt.size(Math.ceil(width * Screen.devicePixelRatio),
                             Math.ceil(height * Screen.devicePixelRatio))
-        source: root.name.length ? EffectsImageProvider.url(EffectsImageProvider.TintedImage, {
+        source: root.name.length ? Effects.url(Effects.TintedImage, {
             path: ":/juxtopposed/" + (root.name === "volume" ? "volume-icon" : root.name) + ".svg",
             color: root.color
         }) : ""

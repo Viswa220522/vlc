@@ -225,6 +225,12 @@
       "node": "XC2-0",
       "format": "original SVG export",
       "sha256": "810dd7f29d3376c358efc638892559b858e3be2ac3490e442c8de579d676451a"
+    },
+    {
+      "file": "playlist-drop-border.svg",
+      "format": "svg",
+      "sha256": "5350d245fbe0ef3f1971887b142bacc7846d020870fc2b6733a0d8e03b4d4f15",
+      "conversion": "Mechanical replacement of the existing New Playlist Canvas border: same 673 x 186 bounds, 6 px corner radius, 2 px stroke and 4/4 dash pattern; no icon artwork."
     }
   ]
 }

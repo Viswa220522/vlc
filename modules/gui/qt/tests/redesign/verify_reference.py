@@ -161,9 +161,9 @@ QtObject {
         'readonly property color secondary: root.dark ? "#262626" : "#bdbdbd"\n        readonly property color highlight: "#D37918"')
         .replace('readonly property color highlight: "#161616"',
                  'readonly property color negative: "#ff3737"\n        readonly property color highlight: "#161616"'))
-    effects = imports / "VLC/Util/EffectsImageProvider.qml"
+    effects = imports / "VLC/Util/Effects.qml"
     effects.write_text(effects.read_text().replace("enum Effect { TintedImage }", "enum Effect { TintedImage, DesignVolume }")
-        .replace('"image://effects/TintedImage?path="', '(effect === EffectsImageProvider.DesignVolume ? "image://effects/DesignVolume?path=" : "image://effects/TintedImage?path=")')
+        .replace('"image://effects/TintedImage?path="', '(effect === Effects.DesignVolume ? "image://effects/DesignVolume?path=" : "image://effects/TintedImage?path=")')
         .replace('+ "&color=" + encodeURIComponent(properties.color)', '+ "&color=" + encodeURIComponent(properties.color) + "&volume=" + (properties.volume || 0)'))
     assets = list((v.QT / "pixmaps/juxtopposed").glob("*.svg"))
     qrc = output / "reference-assets.qrc"

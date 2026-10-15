@@ -791,6 +791,7 @@ ui_%.h: %.ui
 
 libqt_plugin_la_RES = \
 	pixmaps/juxtopposed/sources.json \
+	pixmaps/juxtopposed/playlist-drop-border.svg \
 	pixmaps/juxtopposed/divider.svg \
 	pixmaps/juxtopposed/volume.svg \
 	pixmaps/juxtopposed/pause.svg \

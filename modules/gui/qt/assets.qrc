@@ -9,6 +9,7 @@
         <file alias="DMMono-Light.ttf">pixmaps/fonts/dmmono/DMMono-Light.ttf</file>
     </qresource>
     <qresource prefix="/juxtopposed">
+        <file alias="playlist-drop-border.svg">pixmaps/juxtopposed/playlist-drop-border.svg</file>
         <file alias="divider.svg">pixmaps/juxtopposed/divider.svg</file>
         <file alias="volume.svg">pixmaps/juxtopposed/volume.svg</file>
 

@@ -112,7 +112,7 @@ T.Pane {
                 height: VLCStyle.dp(28, VLCStyle.scale)
                 anchors.verticalCenter: parent.verticalCenter
                 sourceSize: Qt.size(Math.ceil(width * 3), Math.ceil(height * 3))
-                source: EffectsImageProvider.url(EffectsImageProvider.DesignVolume, {
+                source: Effects.url(Effects.DesignVolume, {
                     volume: root._player.volume,
                     backgroundColor: volControl.colorContext.bg.primary
                 })

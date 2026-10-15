@@ -317,7 +317,7 @@ QtObject {
 import QtQuick
 QtObject { enum Format { SubSecondFormattedAsMS } }'''
     util = {name: QT / f"util/qml/{name}.qml" for name in ["FSM", "FSMState", "Helpers", "DelayedBehavior"]}
-    util["EffectsImageProvider"] = """pragma Singleton
+    util["Effects"] = """pragma Singleton
 import QtQuick
 QtObject {
     enum Effect { TintedImage }

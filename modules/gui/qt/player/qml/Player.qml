@@ -1047,14 +1047,16 @@ FocusScope {
         }
     }
 
-    PlayerBrowser {
+    Loader {
         id: designBrowser
         z: 2
-        visible: rootPlayer._showBrowser && topBar.visible && topBar.opacity > 0
+        active: MainCtx.mediaLibraryAvailable && rootPlayer._showBrowser
+        source: active ? Qt.resolvedUrl("PlayerBrowser.qml") : ""
+        visible: active && topBar.visible && topBar.opacity > 0
         anchors.left: parent.left
         anchors.top: topBar.bottom
         anchors.bottom: controlBar.top
-        width: Math.min(implicitWidth, rootPlayer.width)
+        width: Math.min(VLCStyle.dp(427, VLCStyle.scale), rootPlayer.width)
         Navigation.parentItem: rootPlayer
     }
 

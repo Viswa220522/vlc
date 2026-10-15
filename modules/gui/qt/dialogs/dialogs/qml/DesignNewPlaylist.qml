@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Juxtopposed's 713 x 590 New Playlist dialog.
 import QtQuick
+import QtQuick.Window
 import QtQuick.Templates as T
 import VLC.Style
 import VLC.Widgets as Widgets
@@ -87,19 +88,11 @@ T.Popup {
             x: root.dp(20); y: root.dp(310); width: root.dp(673); height: root.dp(186)
             color: root.recessed; radius: root.dp(6)
             MouseArea { anchors.fill: parent; onClicked: root.chooseFiles() }
-            Canvas {
+            Image {
                 anchors.fill: parent
-                onPaint: {
-                    const c = getContext("2d"), r = root.dp(6), edge = root.dp(1)
-                    c.clearRect(0, 0, width, height)
-                    c.strokeStyle = "#2d2d2d"; c.lineWidth = root.dp(2)
-                    c.setLineDash([root.dp(4), root.dp(4)])
-                    c.beginPath(); c.moveTo(r, edge); c.lineTo(width-r, edge)
-                    c.quadraticCurveTo(width-edge, edge, width-edge, r); c.lineTo(width-edge, height-r)
-                    c.quadraticCurveTo(width-edge, height-edge, width-r, height-edge); c.lineTo(r, height-edge)
-                    c.quadraticCurveTo(edge, height-edge, edge, height-r); c.lineTo(edge, r)
-                    c.quadraticCurveTo(edge, edge, r, edge); c.stroke()
-                }
+                source: "qrc:/juxtopposed/playlist-drop-border.svg"
+                sourceSize: Qt.size(Math.ceil(width * Screen.devicePixelRatio),
+                                    Math.ceil(height * Screen.devicePixelRatio))
             }
             DropArea {
                 anchors.fill: parent

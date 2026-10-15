@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 673 186" width="673" height="186">
+  <!-- Juxtopposed's playlist drop area: 2px dashed border, 4px dash/gap. -->
+  <path d="M6 1 H667 Q672 1 672 6 V180 Q672 185 667 185 H6 Q1 185 1 180 V6 Q1 1 6 1"
+        fill="none" stroke="#2d2d2d" stroke-width="2" stroke-dasharray="4 4"/>
+</svg>
