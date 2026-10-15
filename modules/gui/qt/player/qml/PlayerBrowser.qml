@@ -138,7 +138,6 @@ DesignBrowser {
     Component { id: recentMedia; MLRecentMediaModel { ml: MediaLib } }
     DesignNewPlaylist {
         id: newPlaylist
-        parent: root.parent
         busy: root.entries?.transactionPending ?? false
         onSaveRequested: (name, files, thumbnail) => {
             root.pendingThumbnail = thumbnail

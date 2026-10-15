@@ -9,6 +9,7 @@ import VLC.Dialogs
 
 T.Popup {
     id: root
+    parent: T.Overlay.overlay
     function dp(value) { return VLCStyle.dp(value, VLCStyle.scale) }
     width: dp(713); height: dp(590); padding: 0
     modal: true; focus: true

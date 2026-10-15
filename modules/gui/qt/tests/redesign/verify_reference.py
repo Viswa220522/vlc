@@ -196,7 +196,7 @@ Window {
     color: "#000000"
     property var controlStrip: strip
     property var titleBar: titleBar
-    property var browser: browser
+    property var browser: browserLoader.item
     property int audioRequests: 0
     property int subtitleRequests: 0
     property int settingsRequests: 0
@@ -209,7 +209,11 @@ Window {
     readonly property int opens: DialogsProvider.opens
     function enableLibrary() { MainCtx.mediaLibraryAvailable = true }
     function setVolume(value) { Player.volume = value }
-    PlayerBrowser { id: browser; width: 427; y: 40; height: 986 }
+    Loader {
+        id: browserLoader
+        width: 427; y: 40; height: 986
+        sourceComponent: Component { PlayerBrowser {} }
+    }
     Widgets.DesignTitleBar { id: titleBar; width: parent.width; libraryControls: true }
     DesignPlayerControls {
         id: strip
@@ -356,6 +360,8 @@ def main():
     click(text_button("Create playlist"))
     save = item("newPlaylistSave")
     check("unnamed playlist cannot be saved", not save.isEnabled())
+    check("playlist dialog centers in the window through its browser loader",
+          abs(save.mapToScene(v.QPointF()).x() - ((1920 - 713) / 2 + 593)) < 1)
     root.resize(713, 590)
     v.QTest.qWait(100)
     dialog_controls = (item("newPlaylistTitle"), save)
