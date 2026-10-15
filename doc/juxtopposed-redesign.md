@@ -69,6 +69,15 @@ The portable smoke test must verify audio/image decoding, Qt startup with and
 without the media library, plugin loading, scene capture, and normal shutdown.
 Its logs and report are uploaded even when the runtime job fails.
 
+The [native build and Windows runtime job passed](https://github.com/Viswa220522/vlc/actions/runs/38776677021)
+at `01a86aa`. The identical ZIP also passes all four native cases on the local
+Windows machine: both decoding cases and both Qt cases exit normally, with no
+forbidden QML/plugin diagnostics. Its SHA-256 is
+`0d2a237b8726b17fcbdc27367d6427f1ceaced08f19a3230d8811a2f4a4efef5`.
+The native captures were visually inspected at 1x and 2x device pixel ratios.
+The Qt scene capture contains the actual interface; the video region is
+transparent because VLC renders video in a separate native layer.
+
 The current local checks pass 35 existing component cases and 100 reference cases,
 with zero runtime Qt warnings/errors. The reference cases exercise the actual
 production title bar, navigation, browser, playback strip, volume widget, and
@@ -84,9 +93,9 @@ modules. Python compilation, shell syntax, workflow actionlint, and Git
 whitespace checks are also required before pushing.
 
 The [component workflow](../.github/workflows/qt-redesign-checks.yml) runs both
-runners on Windows/Linux and Qt 6.8.3/6.11.2. The 130-check matrix passed
-[on all four combinations](https://github.com/Viswa220522/vlc/actions/runs/38770804611)
-at commit `d331c7c`. These isolated adapters previously missed native integration
+runners on Windows/Linux and Qt 6.8.3/6.11.2. The 135-check matrix passed
+[on all four combinations](https://github.com/Viswa220522/vlc/actions/runs/38776676734)
+at commit `01a86aa`. These isolated adapters previously missed native integration
 errors: an incorrectly named singleton, eager loading of optional library types,
 and Canvas being absent from the contrib build. They do not establish that the
 complete native app is error-free.
@@ -110,6 +119,9 @@ other threads, leaving that call waiting for an abandoned reader lock.
 The wrapper in `.github/scripts/qt-runtime-shutdown.c` bypasses key deletion only
 while the process is terminating. Normal deletion and explicit DLL unload retain
 their runtime behavior. Ordinary source builds do not enable this wrapper.
+
+No upstream `make check` or `make distcheck` result exists for this branch.
+These targeted checks do not replace upstream contribution requirements.
 
 No PR has been opened. Ask the user before creating one. VLC upstream uses
 [VideoLAN GitLab](https://code.videolan.org/videolan/vlc); personal use or a PR
