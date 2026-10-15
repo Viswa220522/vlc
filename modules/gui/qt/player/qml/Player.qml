@@ -951,7 +951,9 @@ FocusScope {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        z: 1
+        // ResumeDialog extends below the title bar and must remain above the
+        // browser rather than having its text covered by the browser surface.
+        z: 3
 
         topMargin: VLCStyle.applicationVerticalMargin
         sideMargin: VLCStyle.applicationHorizontalMargin

@@ -521,6 +521,9 @@ def main():
     QTest.qWait(250)
     print("Component created:", root.property("testBar"), flush=True)
     if args.probe:
+        root.close()
+        root.deleteLater()
+        QTest.qWait(50)
         return 1 if messages else 0
     failures = []
     cases = []

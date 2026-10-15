@@ -87,7 +87,7 @@ FocusScope {
                     name: "divider"
                     width: VLCStyle.dp(24, VLCStyle.scale)
                     height: width
-                    color: theme.fg.secondary
+                    color: theme.separator
                 }
                 Widgets.DesignIconButton {
                     width: VLCStyle.dp(28, VLCStyle.scale)

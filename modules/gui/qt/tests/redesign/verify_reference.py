@@ -313,7 +313,7 @@ def main():
     check("reference browser width 427", root.property("browser").width() == 427)
     # Native video auto-resize previously shrank the window below the strip's
     # usable width. Exercise the new minimum as well as the timestamp boundary.
-    for width in (614, 800):
+    for width in (614, 713, 800):
         root.setWidth(width)
         v.QTest.qWait(100)
         groups = [item(name) for name in ("referenceTransport", "referenceTimelineGroup",
@@ -356,6 +356,16 @@ def main():
     click(text_button("Create playlist"))
     save = item("newPlaylistSave")
     check("unnamed playlist cannot be saved", not save.isEnabled())
+    root.resize(713, 590)
+    v.QTest.qWait(100)
+    dialog_controls = (item("newPlaylistTitle"), save)
+    check("playlist dialog fits the native minimum window", all(
+        target.mapToScene(v.QPointF()).x() >= 0 and target.mapToScene(v.QPointF()).y() >= 0
+        and target.mapToScene(v.QPointF(target.width(), target.height())).x() <= 713
+        and target.mapToScene(v.QPointF(target.width(), target.height())).y() <= 590
+        for target in dialog_controls))
+    root.resize(1920, 1080)
+    v.QTest.qWait(100)
     popup_image = root.grabWindow()
     popup_image.copy((1920-713)//2, (1080-590)//2, 713, 590).save(str(output / "new-playlist.png"))
     field = item("newPlaylistTitle")

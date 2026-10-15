@@ -100,11 +100,11 @@ InterfaceWindowHandler::InterfaceWindowHandler(qt_intf_t *_p_intf, MainCtx* main
         }
 
         int margin = m_mainCtx->windowExtendedMargin() * 2;
-        // The reference strip needs 614 logical pixels even when its time
-        // labels are hidden. Keep video auto-resize and manual resizing from
-        // clipping transport, timeline, volume and the option buttons.
-        int width = 614 + margin;
-        int height = 360 + margin;
+        // Keep the 713 x 590 reference playlist dialog and the navigation rail
+        // inside the full interface, including after video auto-resize. Minimal
+        // view retains its separate compact window size above.
+        int width = 713 + margin;
+        int height = 590 + margin;
 
         double intfScaleFactor = m_mainCtx->getIntfScaleFactor();
         int scaledWidth = std::ceil( intfScaleFactor * width );

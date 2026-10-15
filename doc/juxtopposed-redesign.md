@@ -69,7 +69,7 @@ The portable smoke test must verify audio/image decoding, Qt startup with and
 without the media library, plugin loading, scene capture, and normal shutdown.
 Its logs and report are uploaded even when the runtime job fails.
 
-The current local checks pass 35 existing component cases and 97 reference cases,
+The current local checks pass 35 existing component cases and 99 reference cases,
 with zero runtime Qt warnings/errors. The reference cases exercise the actual
 production title bar, navigation, browser, playback strip, volume widget, and
 New Playlist dialog with isolated VLC service adapters. They check reference
