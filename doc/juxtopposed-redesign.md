@@ -69,7 +69,7 @@ The portable smoke test must verify audio/image decoding, Qt startup with and
 without the media library, plugin loading, scene capture, and normal shutdown.
 Its logs and report are uploaded even when the runtime job fails.
 
-The current local checks pass 35 existing component cases and 95 reference cases,
+The current local checks pass 35 existing component cases and 97 reference cases,
 with zero runtime Qt warnings/errors. The reference cases exercise the actual
 production title bar, navigation, browser, playback strip, volume widget, and
 New Playlist dialog with isolated VLC service adapters. They check reference
@@ -78,7 +78,7 @@ validation, volume rendering, and captures. Every icon is checked for vector
 content and rendered at 1x, 1.5x, 2x, and 3x pixel densities. These adapters do not validate the
 C++ backend or native system menus/window actions.
 
-`qmllint` parses 26 affected QML files with no syntax or duplicate-binding/name
+`qmllint` parses 27 affected QML files with no syntax or duplicate-binding/name
 errors. Full typed diagnostics retain warnings about unavailable generated VLC
 modules. Python compilation, shell syntax, workflow actionlint, and Git
 whitespace checks are also required before pushing.

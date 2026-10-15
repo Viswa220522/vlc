@@ -775,7 +775,7 @@ void SystemPalette::makeDarkPalette()
         setColor(CS, C::Fg, C::Primary, C::Focused, primaryText);
         setColor(CS, C::Fg, C::Primary, C::Hovered, primaryText);
         setColor(CS, C::Fg, C::Primary, C::Disabled, setColorAlpha(Qt::white, 0.2));
-        setColor(CS, C::Fg, C::Secondary, C::Normal, Qt::white);
+        setColor(CS, C::Fg, C::Secondary, C::Normal, secondaryText);
 
         setColor(CS, C::Decoration, C::Border, C::Normal, Qt::transparent);
         setColor(CS, C::Decoration, C::Border, C::Focused, Qt::transparent);

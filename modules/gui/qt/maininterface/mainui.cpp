@@ -4,6 +4,7 @@
 #include <QFontDatabase>
 #ifdef VLC_QT_UI_TESTING
 #include <QQuickItemGrabResult>
+#include <QQuickWindow>
 #include <QTimer>
 #endif
 
@@ -222,6 +223,13 @@ QQuickItem* MainUI::createRootItem()
     // Excluded from ordinary builds; no desktop capture or external GUI input.
     if (const auto output = qEnvironmentVariable("VLC_QT_UI_TEST_OUTPUT"); !output.isEmpty())
     {
+        if (qEnvironmentVariableIsSet("VLC_QT_UI_TEST_MAXIMIZE"))
+        {
+            QTimer::singleShot(1000, this, [this] {
+                if (auto *window = m_mainCtx->intfMainWindow())
+                    window->showMaximized();
+            });
+        }
         const QPointer<QQuickItem> sceneRoot = m_rootItem;
         QTimer::singleShot(3000, this, [this, output, sceneRoot] {
             if (!sceneRoot)
@@ -229,6 +237,10 @@ QQuickItem* MainUI::createRootItem()
             auto* viewport = sceneRoot->findChild<QQuickItem*>(QStringLiteral("vlcDesignViewport"));
             if (!viewport)
                 return;
+            msg_Dbg(m_intf, "UI test: viewport %gx%g, DPR %g, interface scale %g",
+                    viewport->width(), viewport->height(),
+                    viewport->window() ? viewport->window()->devicePixelRatio() : 1.0,
+                    m_mainCtx->getIntfScaleFactor());
             const auto grab = viewport->grabToImage();
             if (!grab)
             {

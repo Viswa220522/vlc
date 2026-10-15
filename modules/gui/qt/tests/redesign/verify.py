@@ -40,6 +40,7 @@ CHECKED_QML = [
     "maininterface/qml/MainDisplay.qml", "maininterface/qml/SideNavigationDelegate.qml",
     "maininterface/qml/SideNavigationPane.qml", "player/qml/ControlBar.qml",
     "player/qml/Player.qml", "player/qml/PlayerControlLayout.qml", "player/qml/SliderBar.qml",
+    "player/qml/TracksMenu.qml",
     "player/qml/TopBar.qml", "player/qml/controlbarcontrols/PlayButton.qml", "style/VLCStyle.qml",
     "widgets/qml/ButtonExt.qml", "widgets/qml/IconToolButton.qml", "widgets/qml/LabelExt.qml",
     "widgets/qml/TextFieldExt.qml", "widgets/qml/DesignIcon.qml",

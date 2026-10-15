@@ -311,6 +311,18 @@ def main():
     check("reference title bar height 40", root.property("titleBar").height() == 40)
     check("reference rail width 50", item("referenceNavigationRail").width() == 50)
     check("reference browser width 427", root.property("browser").width() == 427)
+    # Native video auto-resize previously shrank the window below the strip's
+    # usable width. Exercise the new minimum as well as the timestamp boundary.
+    for width in (614, 800):
+        root.setWidth(width)
+        v.QTest.qWait(100)
+        groups = [item(name) for name in ("referenceTransport", "referenceTimelineGroup",
+                  "referenceVolume", "referenceOptions")] + [button("Play queue")]
+        bounds = [(group.mapToItem(strip, v.QPointF()).x(), group.width()) for group in groups]
+        check(f"all playback groups fit at {width}px", all(x >= 19 and x + w <= width - 19
+              for x, w in bounds) and all(x + w <= nx for (x, w), (nx, _) in zip(bounds, bounds[1:])))
+    root.setWidth(1920)
+    v.QTest.qWait(100)
     click(item("referencePrevious"))
     check("previous command", root.property("previousCalls") == 1)
     click(item("referenceNext"))

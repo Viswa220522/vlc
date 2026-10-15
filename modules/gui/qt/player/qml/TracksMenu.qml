@@ -57,7 +57,7 @@ T.Popup {
 
     background: Rectangle {
         // NOTE: The opacity should be stronger on a light background for readability.
-        color: popupTheme.bg.primary.alpha(popupTheme.palette.isDark ? 0.8 : 0.96)
+        color: popupTheme.bg.primary.alpha((popupTheme.palette?.isDark ?? true) ? 0.8 : 0.96)
 
         Rectangle {
             anchors.left: parent.left

@@ -54,6 +54,7 @@ def run(name, options, required, forbidden, timeout=40, capture=False, video=Fal
         capture_path = output / (name + '.png')
         if capture:
             environment['VLC_QT_UI_TEST_OUTPUT'] = str(capture_path)
+            environment['VLC_QT_UI_TEST_MAXIMIZE'] = '1'
         command = [arg for arg in common if not (video and arg == '--vout=dummy')
                    and not (library and arg == '--no-media-library')]
         if library:

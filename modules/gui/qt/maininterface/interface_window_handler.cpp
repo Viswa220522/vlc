@@ -100,7 +100,10 @@ InterfaceWindowHandler::InterfaceWindowHandler(qt_intf_t *_p_intf, MainCtx* main
         }
 
         int margin = m_mainCtx->windowExtendedMargin() * 2;
-        int width = 320 + margin;
+        // The reference strip needs 614 logical pixels even when its time
+        // labels are hidden. Keep video auto-resize and manual resizing from
+        // clipping transport, timeline, volume and the option buttons.
+        int width = 614 + margin;
         int height = 360 + margin;
 
         double intfScaleFactor = m_mainCtx->getIntfScaleFactor();
