@@ -1,6 +1,11 @@
 #include "mainui.hpp"
 
 #include <cassert>
+#include <QFontDatabase>
+#ifdef VLC_QT_UI_TESTING
+#include <QQuickItemGrabResult>
+#include <QTimer>
+#endif
 
 #include "maininterface/navigationmodel.hpp"
 
@@ -212,6 +217,32 @@ QQuickItem* MainUI::createRootItem()
         goto end;
     }
 
+#ifdef VLC_QT_UI_TESTING
+    // Opt-in capture of this application's own scene for portable UI tests.
+    // Excluded from ordinary builds; no desktop capture or external GUI input.
+    if (const auto output = qEnvironmentVariable("VLC_QT_UI_TEST_OUTPUT"); !output.isEmpty())
+    {
+        const QPointer<QQuickItem> sceneRoot = m_rootItem;
+        QTimer::singleShot(3000, this, [this, output, sceneRoot] {
+            if (!sceneRoot)
+                return;
+            auto* viewport = sceneRoot->findChild<QQuickItem*>(QStringLiteral("vlcDesignViewport"));
+            if (!viewport)
+                return;
+            const auto grab = viewport->grabToImage();
+            if (!grab)
+            {
+                msg_Err(m_intf, "UI test: unable to capture the interface scene");
+                return;
+            }
+            connect(grab.data(), &QQuickItemGrabResult::ready, this, [this, grab, output] {
+                if (!grab->saveToFile(output))
+                    msg_Err(m_intf, "UI test: unable to save the interface capture");
+            }, Qt::SingleShotConnection);
+        });
+    }
+#endif
+
 end:
     delete m_component; // No need to have the component around anymore.
     return m_rootItem;
@@ -220,6 +251,13 @@ end:
 void MainUI::registerQMLTypes()
 {
     assert(!g_qmlTypesAreRegistered);
+
+    // Load the reference typefaces privately; no system font installation.
+    QFontDatabase::addApplicationFont(":/fonts/Inter.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/Inter-Italic.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/DMMono-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/DMMono-Medium.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/DMMono-Light.ttf");
 
     {
         const char* uri = "VLC.MainInterface";

@@ -52,6 +52,7 @@ Item {
 
     Item {
         id: g_mainInterface
+        objectName: "vlcDesignViewport"
 
         anchors.fill: parent
         anchors.topMargin: MainCtx.windowExtendedMargin

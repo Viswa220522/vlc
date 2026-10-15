@@ -230,7 +230,7 @@ FocusScope {
         id: menuTopbar
         z: 6
 
-        visible: MainCtx.hasToolbarMenu
+        visible: false
         enabled: visible
 
         anchors {
@@ -249,7 +249,7 @@ FocusScope {
         }
     }
 
-    LocalTopbar {
+    Widgets.DesignTitleBar {
         id: localTopbar
         z: 5
 
@@ -258,10 +258,6 @@ FocusScope {
             left: parent.left
             right: parent.right
         }
-
-        leftPadding: VLCStyle.applicationHorizontalMargin
-        rightPadding: VLCStyle.applicationHorizontalMargin
-        topPadding: menuTopbar.visible ? 0 : VLCStyle.applicationVerticalMargin
 
         plListView: {
             if (playlistLoader.active)
@@ -551,7 +547,7 @@ FocusScope {
             }
         }
 
-        SideNavigationPane {
+        DesignNavigationPane {
             id: sidebar
 
             z: 3
@@ -563,7 +559,7 @@ FocusScope {
 
             width: VLCStyle.isScreenReallySmall ? 0.0 : collapsedWidth
 
-            property real collapsedWidth: VLCStyle.collapsedNavigationPaneWidth + VLCStyle.applicationHorizontalMargin
+            property real collapsedWidth: VLCStyle.dp(50, VLCStyle.scale)
 
             delegateShowText: (state === "expanded")
 
@@ -571,14 +567,14 @@ FocusScope {
 
             height: parent.height - g_mainDisplay.displayMargin
 
-            property int maximumWidth: Math.max(minimumWidth, (g_mainDisplay.width + sidebarResizeHandle.width) / 3)
+            property int maximumWidth: minimumWidth
 
             topPadding: 0
             leftPadding: 0
-            rightPadding: sidebarResizeHandle.visible ? sidebarResizeHandle.visualBorder.width : 0.0
-            bottomPadding: VLCStyle.applicationVerticalMargin + VLCStyle.margin_small
+            rightPadding: 0
+            bottomPadding: 0
 
-            safeAreaLeftMargin: VLCStyle.applicationHorizontalMargin
+            safeAreaLeftMargin: 0
 
             useAcrylic: (VLCStyle.isScreenSmall ? (sidebar.state === "") : true) // See `694d51a7` for the reasoning.
 
@@ -622,7 +618,7 @@ FocusScope {
                 History.push(modelUri)
             }
 
-            implicitWidth: Math.round(Helpers.clamp(MainCtx.navigationPanel.width, minimumWidth, maximumWidth))
+            implicitWidth: minimumWidth
 
             Navigation.parentItem: g_mainDisplay
             Navigation.upItem: localTopbar
@@ -638,7 +634,7 @@ FocusScope {
             }
 
             Component.onCompleted: {
-                Qt.callLater(() => { sidebarTransition.enabled = true; })
+                Qt.callLater(() => { if (sidebarTransition) sidebarTransition.enabled = true; })
             }
 
             states: State {
@@ -672,7 +668,7 @@ FocusScope {
                 panelObject: MainCtx.navigationPanel
                 atRight: true
 
-                resizeHandle.visible: (sidebar.state === "expanded") && !VLCStyle.isScreenSmall
+                resizeHandle.visible: false
                 visualBorder.visible: !topLeftCornerBackground.visible
 
                 minimumWidth: sidebar.minimumWidth
@@ -714,7 +710,7 @@ FocusScope {
             }
 
             Component.onCompleted: {
-                Qt.callLater(() => { playlistTransition.enabled = true; })
+                Qt.callLater(() => { if (playlistTransition) playlistTransition.enabled = true; })
             }
 
             states: State {
@@ -1002,7 +998,7 @@ FocusScope {
             }
 
             Component.onCompleted: {
-                Qt.callLater(() => { visibleBinding.when = true })
+                Qt.callLater(() => { if (visibleBinding) visibleBinding.when = true })
             }
 
             dragXMin: VLCStyle.applicationHorizontalMargin

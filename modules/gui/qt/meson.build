@@ -611,6 +611,7 @@ qml_modules += {
     'sources': files(
         'dialogs/dialogs/qml/CustomDialog.qml',
         'dialogs/dialogs/qml/Dialogs.qml',
+        'dialogs/dialogs/qml/DesignNewPlaylist.qml',
         'dialogs/dialogs/qml/ModalDialog.qml',
         'dialogs/dialogs/qml/WindowDialog.qml',
         'dialogs/toolbar/qml/EditorDNDDelegate.qml',
@@ -643,6 +644,8 @@ qml_modules += {
         'maininterface/qml/NoMedialibHome.qml',
         qml_maininterface_extra_files,
         'maininterface/qml/SideNavigationPane.qml',
+        'maininterface/qml/DesignNavigationPane.qml',
+        'maininterface/qml/DesignBrowser.qml',
         'maininterface/qml/SideNavigationDelegate.qml',
     ),
 }
@@ -733,6 +736,8 @@ qml_modules += {
    'outdir' : 'VLC/Player',
    'sources': files(
        'player/qml/ControlBar.qml',
+        'player/qml/DesignPlayerControls.qml',
+        'player/qml/PlayerBrowser.qml',
        'player/qml/PlaybackSpeed.qml',
        'player/qml/LyricsFlickable.qml',
        'player/qml/MiniPlayer.qml',
@@ -891,6 +896,9 @@ qml_modules += {
         'widgets/qml/GridSortFilterControls.qml',
         'widgets/qml/HorizontalResizeHandle.qml',
         'widgets/qml/IconLabel.qml',
+        'widgets/qml/DesignIcon.qml',
+        'widgets/qml/DesignIconButton.qml',
+        'widgets/qml/DesignTitleBar.qml',
         'widgets/qml/IconButton.qml',
         'widgets/qml/IconToolButton.qml',
         'widgets/qml/IconTrackButton.qml',

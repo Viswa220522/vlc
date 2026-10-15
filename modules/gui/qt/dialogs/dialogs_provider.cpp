@@ -703,6 +703,18 @@ QStringList DialogsProvider::showSimpleOpen( const QString& help,
     return res;
 }
 
+QUrl DialogsProvider::selectPlaylistThumbnail()
+{
+    return QFileDialog::getOpenFileUrl(nullptr, qtr("Select playlist thumbnail"),
+                                      p_intf->p_mi->getDialogFilePath(),
+                                      qtr("Images (*.png *.jpg *.jpeg *.webp *.bmp)"));
+}
+
+QUrl DialogsProvider::selectMediaFolder()
+{
+    return QUrl(getDirectoryDialog(p_intf));
+}
+
 void DialogsProvider::simpleOpenDialog(bool start)
 {
     QStringList urls = DialogsProvider::showSimpleOpen();

@@ -32,9 +32,24 @@ T.ToolButton {
 
     property bool paintOnly: false
 
+    // Use the original reference artwork wherever a matching design icon exists.
+    readonly property string designIcon: {
+        if (text === VLCIcons.previous) return "previous"
+        if (text === VLCIcons.next) return "next"
+        if (text === VLCIcons.playlist) return "queue"
+        if (text === VLCIcons.ellipsis) return "more"
+        if (text === VLCIcons.fullscreen || text === VLCIcons.defullscreen) return "fullscreen"
+        if (text === VLCIcons.back) return "back"
+        if (text === VLCIcons.settings) return "settings"
+        if (text === VLCIcons.effect_filter) return "audio"
+        if ([VLCIcons.volume_muted, VLCIcons.volume_zero, VLCIcons.volume_low,
+             VLCIcons.volume_medium, VLCIcons.volume_high].includes(text)) return "volume"
+        return ""
+    }
+
     required property string description
 
-    property color color: (control.checked) ? theme.accent : theme.fg.primary
+    property color color: control.checked ? theme.accent : designIcon.length ? theme.fg.secondary : theme.fg.primary
 
     property color backgroundColor: theme.bg.primary
 
@@ -46,9 +61,9 @@ T.ToolButton {
 
     enabled: !paintOnly
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+    implicitWidth: designIcon.length ? VLCStyle.dp(30, VLCStyle.scale) : Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+    implicitHeight: designIcon.length ? VLCStyle.dp(32, VLCStyle.scale) : Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
 
     baselineOffset: contentItem.y + contentItem.baselineOffset
@@ -106,7 +121,7 @@ T.ToolButton {
     }
 
     contentItem: Widgets.IconLabel {
-        text: control.text
+        text: control.designIcon.length ? "" : control.text
 
         color: control.color
 
@@ -119,5 +134,14 @@ T.ToolButton {
         }
 
         font: control.font
+
+        Widgets.DesignIcon {
+            visible: control.designIcon.length > 0
+            anchors.centerIn: parent
+            width: implicitWidth
+            height: implicitHeight
+            name: control.designIcon
+            color: control.color
+        }
     }
 }

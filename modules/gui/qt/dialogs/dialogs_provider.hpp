@@ -133,11 +133,13 @@ public:
     {
         return Singleton<DialogsProvider>::getInstance( p_intf );
     }
-    QStringList showSimpleOpen( const QString& help = QString(),
+    Q_INVOKABLE QStringList showSimpleOpen( const QString& help = QString(),
                                 int filters = EXT_FILTER_MEDIA |
                                 EXT_FILTER_VIDEO | EXT_FILTER_AUDIO |
                                 EXT_FILTER_PLAYLIST,
                                 const QUrl& path = QUrl() );
+    Q_INVOKABLE QUrl selectPlaylistThumbnail();
+    Q_INVOKABLE QUrl selectMediaFolder();
     bool isDying() { return b_isDying; }
     static QString getDirectoryDialog( qt_intf_t *p_intf);
 

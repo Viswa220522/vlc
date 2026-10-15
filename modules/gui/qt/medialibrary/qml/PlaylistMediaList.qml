@@ -321,6 +321,9 @@ MainViewLoader {
                 title: (model.name) ? model.name
                                     : qsTr("Unknown title")
 
+                image: model.id ? MainCtx.settingValue("Juxtopposed/playlistCover/" + model.id.toString(), model.thumbnail)
+                                : model.thumbnail
+
                 labels: [
                     (function () {
                         const labels = []

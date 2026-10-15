@@ -55,12 +55,14 @@ T.Pane {
         id: volumeWidget
 
         anchors.fill: parent
-        spacing: 0
+        spacing: VLCStyle.dp(8, VLCStyle.scale)
 
         Widgets.IconToolButton{
             id: volumeBtn
 
             focus: true
+            implicitWidth: VLCStyle.dp(24, VLCStyle.scale)
+            implicitHeight: VLCStyle.dp(24, VLCStyle.scale)
             paintOnly: root.paintOnly
             text: {
                 if (_player.muted)
@@ -98,7 +100,23 @@ T.Pane {
             id: volControl
 
             // FIXME: use VLCStyle
-            implicitWidth: VLCStyle.dp(100, VLCStyle.scale)
+            implicitWidth: VLCStyle.dp(88, VLCStyle.scale)
+            implicitHeight: VLCStyle.dp(28, VLCStyle.scale)
+            handle: Item {
+                implicitWidth: 0
+                implicitHeight: 0
+                x: volControl.leftPadding + volControl.visualPosition * volControl.availableWidth
+            }
+            background: Image {
+                width: volControl.availableWidth
+                height: VLCStyle.dp(28, VLCStyle.scale)
+                anchors.verticalCenter: parent.verticalCenter
+                sourceSize: Qt.size(Math.ceil(width * 3), Math.ceil(height * 3))
+                source: EffectsImageProvider.url(EffectsImageProvider.DesignVolume, {
+                    volume: root._player.volume,
+                    backgroundColor: volControl.colorContext.bg.primary
+                })
+            }
 
             // WARNING: Directly setting the insets break handle and background positioning.
             Binding on topInset {
@@ -111,7 +129,7 @@ T.Pane {
             }
 
             Layout.fillHeight: true
-            Layout.margins: VLCStyle.margin_xsmall
+            Layout.margins: 0
 
             property bool _inhibitPlayerVolumeUpdate: false
 
@@ -249,7 +267,7 @@ T.Pane {
                 visible: (root._maxvol > 100)
 
                 // FIXME: tick mark is not visible when it's over slider
-                color: root.sliderColor
+                color: "transparent"
 
                 // NOTE: This is a helper to select the default volume when clicking on the
                 //       tickmark. We apply a higher clamp value to achieve that behavior on

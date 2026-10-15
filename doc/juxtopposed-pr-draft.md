@@ -1,34 +1,23 @@
-# Draft PR: Adapt VLC desktop controls to Juxtopposed's redesign
+# Draft: Port VLC player chrome and browser from Juxtopposed's design
 
-VLC's desktop interface uses a large circular play button and a seek row above
-its controls. This change introduces the concept's graphite surfaces, muted
-labels, solid orange rectangular play control, and an adaptive inline seek row
-for wide pinned players. Narrow windows and profiles with center controls use
-the stacked layout.
+Replace the earlier style adaptation with the supplied native player layout:
+a 40 px title bar, 50 px rail and 377 px browser, and a 54 px playback strip.
+Bundle the original icons and reference typefaces, connect playlist/folder
+models, and implement the supplied New Playlist dialog.
 
-The changes use VLC's native Qt/QML components and semantic palette. Day and
-Night palettes, shared typography, navigation sizing, input radii, and toolbar
-grouping are updated. Existing playback handlers and default control IDs are
-retained. Saved toolbar profiles are not overwritten.
-
-Design credit and thanks to [Juxtopposed (@juxtopposed)](https://www.youtube.com/@juxtopposed)
+Credit and thanks to [Juxtopposed (@juxtopposed)](https://www.youtube.com/@juxtopposed)
 for [I Redesigned VLC After 25 Years](https://www.youtube.com/watch?v=ERFeOgqk324)
-and [the community design](https://www.figma.com/community/file/1691465999134370980).
+and [the original community design](https://www.figma.com/community/file/1691465999134370980).
 
-Validation: 35 Windows Qt 6.11.2 checks pass with zero failures and zero Qt runtime
-warnings/errors. Production QML is exercised with isolated VLC service/type
-adapters, including resizing, profile switching, scaling, keyboard/pointer
-controls, chaptered seeking, Stop holds, custom accent contrast, and rendering.
-Qt component captures were reviewed. QML syntax/duplicate-binding checks for all
-14 modified QML files, Python compilation, palette color literal/control inventory
-checks, Git whitespace checks, and workflow actionlint pass. A repeatable runner
-and Windows/Linux workflow are included; hosted CI has not run yet.
+Validation: 35 existing component checks and 31 reference checks pass locally,
+with zero runtime Qt diagnostics. Native backend services are adapters in these
+runners. The baseline native build succeeded; the new source needs compilation,
+portable smoke tests, and native scene review. Packaging includes the matching
+compiler runtime after baseline smoke tests found missing plug-in dependencies.
 
-Full typed lint retains warnings because the generated native VLC modules are
-unavailable. C++ compilation and complete VLC integration remain pending. This
-draft is not ready to open until those checks and user approval are obtained.
+This is unfinished. Full settings, library content, music playback, onboarding,
+subtitle timelines, menus, and toolbar customization remain to be ported. See
+[the current scope and validation notes](juxtopposed-redesign.md).
 
-Scope and reference gaps are documented in [the redesign notes](juxtopposed-redesign.md).
-This is a desktop appearance and playback-layout adaptation; onboarding, waveform/
-subtitle timelines, a second library browser, and the concept's settings panels
-are not part of this patch.
+Do not open this draft until the requested implementation and validation are
+complete and the user approves PR creation.

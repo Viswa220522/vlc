@@ -1,4 +1,50 @@
 <RCC>
+    <qresource prefix="/fonts">
+        <file alias="Inter-OFL.txt">pixmaps/fonts/inter/OFL.txt</file>
+        <file alias="DMMono-OFL.txt">pixmaps/fonts/dmmono/OFL.txt</file>
+        <file alias="Inter.ttf">pixmaps/fonts/inter/Inter.ttf</file>
+        <file alias="Inter-Italic.ttf">pixmaps/fonts/inter/Inter-Italic.ttf</file>
+        <file alias="DMMono-Regular.ttf">pixmaps/fonts/dmmono/DMMono-Regular.ttf</file>
+        <file alias="DMMono-Medium.ttf">pixmaps/fonts/dmmono/DMMono-Medium.ttf</file>
+        <file alias="DMMono-Light.ttf">pixmaps/fonts/dmmono/DMMono-Light.ttf</file>
+    </qresource>
+    <qresource prefix="/juxtopposed">
+        <file alias="divider.png">pixmaps/juxtopposed/divider.png</file>
+        <file alias="volume.svg">pixmaps/juxtopposed/volume.svg</file>
+
+        <file alias="pause.png">pixmaps/juxtopposed/pause.png</file>
+
+        <file alias="add.png">pixmaps/juxtopposed/add.png</file>
+        <file alias="audio.png">pixmaps/juxtopposed/audio.png</file>
+        <file alias="back.png">pixmaps/juxtopposed/back.png</file>
+        <file alias="browser-more.png">pixmaps/juxtopposed/browser-more.png</file>
+        <file alias="close.png">pixmaps/juxtopposed/close.png</file>
+        <file alias="cone.png">pixmaps/juxtopposed/cone.png</file>
+        <file alias="expand.png">pixmaps/juxtopposed/expand.png</file>
+        <file alias="folder.png">pixmaps/juxtopposed/folder.png</file>
+        <file alias="fullscreen.png">pixmaps/juxtopposed/fullscreen.png</file>
+        <file alias="home.png">pixmaps/juxtopposed/home.png</file>
+        <file alias="list.png">pixmaps/juxtopposed/list.png</file>
+        <file alias="maximize.png">pixmaps/juxtopposed/maximize.png</file>
+        <file alias="minimize.png">pixmaps/juxtopposed/minimize.png</file>
+        <file alias="more.png">pixmaps/juxtopposed/more.png</file>
+        <file alias="music.png">pixmaps/juxtopposed/music.png</file>
+        <file alias="network.png">pixmaps/juxtopposed/network.png</file>
+        <file alias="next.png">pixmaps/juxtopposed/next.png</file>
+        <file alias="play.png">pixmaps/juxtopposed/play.png</file>
+        <file alias="playlists.png">pixmaps/juxtopposed/playlists.png</file>
+        <file alias="previous.png">pixmaps/juxtopposed/previous.png</file>
+        <file alias="queue.png">pixmaps/juxtopposed/queue.png</file>
+        <file alias="recent.png">pixmaps/juxtopposed/recent.png</file>
+        <file alias="search.png">pixmaps/juxtopposed/search.png</file>
+        <file alias="settings.png">pixmaps/juxtopposed/settings.png</file>
+        <file alias="sidebar.png">pixmaps/juxtopposed/sidebar.png</file>
+        <file alias="sort.png">pixmaps/juxtopposed/sort.png</file>
+        <file alias="subtitles.png">pixmaps/juxtopposed/subtitles.png</file>
+        <file alias="videos.png">pixmaps/juxtopposed/videos.png</file>
+        <file alias="volume.png">pixmaps/juxtopposed/volume.png</file>
+    </qresource>
+
     <qresource prefix="/logo">
         <file alias="vlc256.png">../../../share/icons/256x256/vlc.png</file>
         <file alias="vlc128.png">../../../share/icons/128x128/vlc.png</file>

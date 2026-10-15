@@ -108,6 +108,9 @@ void appendMediaIntoPlaylist(vlc_medialibrary_t* ml, int64_t playlistId, const s
     [this, initialItems](quint64, const Ctx& ctx) {
         endTransaction(); // this is intentionally called here and not after `append()`
 
+        if (ctx.createdPlaylistId.id != INVALID_MLITEMID_ID)
+            emit playlistCreated(MLItemId(ctx.createdPlaylistId.id, VLC_ML_PARENT_PLAYLIST).toString());
+
         if (ctx.createdPlaylistId.id)
         {
             append(ctx.createdPlaylistId, initialItems);

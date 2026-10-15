@@ -25,10 +25,10 @@ if os.name == "nt":
     os.environ.setdefault("QT_QPA_FONTDIR", str(Path(os.environ.get("WINDIR", "C:/Windows")) / "Fonts"))
 
 import PySide6
-from PySide6.QtCore import QObject, Property, Signal, Slot, QPointF, Qt, QUrl, QtMsgType, qInstallMessageHandler
-from PySide6.QtGui import QGuiApplication, QColor
+from PySide6.QtCore import QObject, Property, Signal, Slot, QPointF, QSize, Qt, QUrl, QUrlQuery, QtMsgType, qInstallMessageHandler
+from PySide6.QtGui import QGuiApplication, QColor, QImage, QPainter
 from PySide6.QtQml import QQmlEngine, QQmlComponent, QJSValue, QmlAttached, QmlNamedElement
-from PySide6.QtQuick import QQuickItem
+from PySide6.QtQuick import QQuickItem, QQuickImageProvider
 from PySide6.QtTest import QTest
 
 REPO = Path(__file__).resolve().parents[5]
@@ -42,7 +42,13 @@ CHECKED_QML = [
     "player/qml/Player.qml", "player/qml/PlayerControlLayout.qml", "player/qml/SliderBar.qml",
     "player/qml/TopBar.qml", "player/qml/controlbarcontrols/PlayButton.qml", "style/VLCStyle.qml",
     "widgets/qml/ButtonExt.qml", "widgets/qml/IconToolButton.qml", "widgets/qml/LabelExt.qml",
-    "widgets/qml/TextFieldExt.qml",
+    "widgets/qml/TextFieldExt.qml", "widgets/qml/DesignIcon.qml",
+    "widgets/qml/DesignIconButton.qml", "widgets/qml/DesignTitleBar.qml",
+    "maininterface/qml/DesignNavigationPane.qml", "player/qml/MiniPlayer.qml",
+    "player/qml/DesignPlayerControls.qml", "player/qml/controlbarcontrols/VolumeWidget.qml",
+    "maininterface/qml/DesignBrowser.qml", "player/qml/PlayerBrowser.qml",
+    "dialogs/dialogs/qml/DesignNewPlaylist.qml", "maininterface/qml/MainInterface.qml",
+    "medialibrary/qml/PlaylistMediaList.qml",
 ]
 
 
@@ -311,6 +317,15 @@ QtObject {
 import QtQuick
 QtObject { enum Format { SubSecondFormattedAsMS } }'''
     util = {name: QT / f"util/qml/{name}.qml" for name in ["FSM", "FSMState", "Helpers", "DelayedBehavior"]}
+    util["EffectsImageProvider"] = """pragma Singleton
+import QtQuick
+QtObject {
+    enum Effect { TintedImage }
+    function url(effect, properties) {
+        return "image://effects/TintedImage?path=" + encodeURIComponent(properties.path)
+            + "&color=" + encodeURIComponent(properties.color)
+    }
+}"""
     util["KeyHelper"] = '''pragma Singleton
 import QtQuick
 QtObject { function matchOk(event) { return event.key === Qt.Key_Space || event.key === Qt.Key_Return } }'''
@@ -321,7 +336,7 @@ QtObject {
     function qmlWheelEvent(event) { wheelUpDown(event.angleDelta.y / 120) }
 }'''
     widgets = {name: QT / f"widgets/qml/{name}.qml" for name in
-               ["AnimatedBackground", "LabelExt", "IconLabel", "IconToolButton", "ButtonExt", "TextFieldExt"]}
+               ["AnimatedBackground", "LabelExt", "IconLabel", "IconToolButton", "ButtonExt", "TextFieldExt", "DesignIcon", "DesignIconButton"]}
     widgets["ToolTipExt"] = '''import QtQuick
 import QtQuick.Controls.Basic
 import VLC.Style
@@ -423,6 +438,26 @@ def call(engine, obj, name, *args):
         raise AssertionError(result.toString())
 
 
+class DesignImageProvider(QQuickImageProvider):
+    """Adapter for the production provider's CPU tint; does not test its C++ implementation."""
+    def __init__(self):
+        super().__init__(QQuickImageProvider.Image)
+
+    def requestImage(self, identifier, _size, requested):
+        query = QUrlQuery(QUrl(identifier))
+        name = Path(query.queryItemValue("path", QUrl.FullyDecoded)).name
+        image = QImage(str(QT / "pixmaps/juxtopposed" / name)).convertToFormat(QImage.Format_ARGB32_Premultiplied)
+        if image.isNull():
+            return image
+        painter = QPainter(image)
+        painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        painter.fillRect(image.rect(), QColor(query.queryItemValue("color", QUrl.FullyDecoded)))
+        painter.end()
+        if requested.isValid():
+            image = image.scaled(requested, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        return image
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=REPO.parent / ".validation/redesign")
@@ -468,7 +503,14 @@ def main():
             print("QT:", message, flush=True)
     qInstallMessageHandler(handle_message)
     app = QGuiApplication(sys.argv[:1])
+    from PySide6.QtGui import QFontDatabase
+    for font in (QT / "pixmaps/fonts").rglob("*.ttf"):
+        if QFontDatabase.addApplicationFont(str(font)) < 0:
+            raise AssertionError(f"Cannot load reference font: {font}")
+    if not {"Inter", "DM Mono"}.issubset(set(QFontDatabase.families())):
+        raise AssertionError("The bundled reference typefaces did not register")
     engine = QQmlEngine()
+    engine.addImageProvider("effects", DesignImageProvider())
     engine.addImportPath(str(args.output / "imports"))
     component = QQmlComponent(engine, QUrl.fromLocalFile(str((args.output / "Scene.qml").resolve())))
     root = component.create()
@@ -535,7 +577,7 @@ def main():
             QTest.qWait(150)
             assert_true(bar.property("inlineSeek"), "compact layout failed at scaled width")
             assert_true(abs(play.width() - 54 * scale) <= 1, "play width does not scale")
-            assert_true(abs(play.height() - 32 * scale) <= 1, "play height does not scale")
+            assert_true(abs(play.height() - 28 * scale) <= 1, "play height does not scale")
         check(f"interface scale {scale}", test_scale)
     for scheme in [1, 2]:
         def test_scheme(scheme=scheme):

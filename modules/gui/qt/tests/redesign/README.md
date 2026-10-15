@@ -6,7 +6,7 @@ Create a Python environment and install `requirements.txt`, then run:
 python modules/gui/qt/tests/redesign/verify.py --output /path/to/test-artifacts
 ```
 
-The runner checks all 14 QML files changed by the redesign even after committing
+The runner checks all 26 affected QML files changed by the redesign even after committing
 them. Qt's `qmllint` parses the files and treats duplicate bindings/names as
 errors. A deliberately invalid fixture verifies that the parser rejects errors.
 The full lint JSON is retained, including warnings about unavailable native VLC
@@ -32,3 +32,18 @@ color literals, and retention of the default toolbar controls. All Qt runtime
 warnings and errors fail the run. Component screenshots and JSON reports are
 written to the output directory. A full native VLC build remains required for
 C++ compilation and application integration checks.
+
+## Reference layout runner
+
+```sh
+python modules/gui/qt/tests/redesign/verify_reference.py --output /path/to/reference-artifacts
+```
+
+This additionally exercises the production reference title bar, rail, browser,
+playback strip, volume widget, and New Playlist dialog. It checks dimensions
+against the 1920 ? 1080 reference, signal wiring, browser back/forward,
+playlist creation, disabled Save validation, and increasing volume indicators.
+Original icon assets and private bundled fonts are used. Both runners require
+no system font installation. Native media-library models, file pickers, menus,
+window operations, and the image provider use adapters and require separate
+compiled-application tests. Component captures are not complete VLC screenshots.

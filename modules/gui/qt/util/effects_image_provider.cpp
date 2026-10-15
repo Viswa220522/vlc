@@ -22,6 +22,9 @@
 #include <QUrl>
 #include <QUrlQuery>
 #include <QPainterPath>
+#include <QFile>
+#include <QBuffer>
+#include <QImageReader>
 
 #include <memory>
 
@@ -230,6 +233,52 @@ QImage EffectsImageProvider::requestImage(const QString &id, QSize *size, const 
         std::unique_ptr<IEffect> effect;
         switch (static_cast<EffectsImageProvider::Effect>(effectMetaEnum.keyToValue(url.path().toLatin1().constData())))
         {
+        case EffectsImageProvider::DesignVolume:
+        {
+            QFile file(QStringLiteral(":/juxtopposed/volume.svg"));
+            if (!file.open(QIODevice::ReadOnly))
+                return {};
+            auto svg = file.readAll();
+            const auto settings = queryToVariantMap(query);
+            const QColor background(settings.value("backgroundColor").toString());
+            if (background.isValid())
+                svg.replace("#090909", background.name().toLatin1());
+            const qreal volume = qBound(0.0, settings.value("volume").toDouble(), 2.0);
+            // Keep the original paths and gradient. Only the existing level mask
+            // changes with playback volume. The reference mask is 33px at 75%.
+            svg.replace("layer-name=\"Rectangle 7\"",
+                        QByteArray("transform=\"scale(") + QByteArray::number(volume * 88.0 / 66.0)
+                            + ",1)\" layer-name=\"Rectangle 7\"");
+            // Qt SVG uses luminance masks and legacy SVG color syntax. These
+            // equivalent forms preserve the exported alpha mask and 20% overlay.
+            svg.replace("fill=\"#262626\"", "fill=\"#ffffff\"");
+            svg.replace("fill=\"rgb(0 0 0 / 20%)\"", "fill=\"#000000\" fill-opacity=\"0.2\"");
+            QBuffer buffer(&svg);
+            buffer.open(QIODevice::ReadOnly);
+            QImageReader reader(&buffer, "SVG");
+            reader.setScaledSize(requestedSize);
+            return reader.read();
+        }
+        case EffectsImageProvider::TintedImage:
+        {
+            // Preserve the exported design asset's alpha, including antialiasing.
+            // CPU composition works with both software and accelerated rendering.
+            const auto settings = queryToVariantMap(query);
+            const auto path = settings.value("path").toString();
+            if (!path.startsWith(":/juxtopposed/"))
+                return {};
+            QImage image(path);
+            if (image.isNull())
+                return {};
+            image = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+            QPainter painter(&image);
+            painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+            painter.fillRect(image.rect(), QColor(settings.value("color").toString()));
+            painter.end();
+            return requestedSize.isValid()
+                ? image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+                : image;
+        }
         case EffectsImageProvider::RectDropShadow:
             effect = std::make_unique<RectDropShadowEffect>(queryToVariantMap(query));
             break;

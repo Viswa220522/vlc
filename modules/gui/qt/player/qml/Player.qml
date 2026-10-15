@@ -51,7 +51,7 @@ FocusScope {
     }
 
     // Only applicable in video mode:
-    property bool displayFadeRectangles: !_controlsUnderVideo && (height > (implicitFadeRectangleHeight * 3))
+    property bool displayFadeRectangles: false
     property real implicitFadeRectangleHeight: VLCStyle.dp(206, VLCStyle.scale)
 
     // Private
@@ -61,6 +61,7 @@ FocusScope {
                                         (MainCtx.intfMainWindow.visibility !== Window.FullScreen))
 
     property bool _keyPressed: false
+    property bool _showBrowser: true
 
     // Settings
 
@@ -929,6 +930,20 @@ FocusScope {
         }
     }
 
+    Rectangle {
+        objectName: "designVideoFrame"
+        z: 1
+        x: -VLCStyle.dp(10, VLCStyle.scale)
+        y: topBar.height - VLCStyle.dp(20, VLCStyle.scale)
+        width: parent.width + VLCStyle.dp(20, VLCStyle.scale)
+        height: controlBar.y - y + VLCStyle.dp(19, VLCStyle.scale)
+        color: "transparent"
+        border.color: windowTheme.bg.primary
+        border.width: VLCStyle.dp(20, VLCStyle.scale)
+        radius: VLCStyle.dp(29, VLCStyle.scale)
+        visible: MainCtx.hasEmbededVideo && (topBar.opacity > 0.01 || controlBar.opacity > 0.01)
+    }
+
     TopBar {
         id: topBar
 
@@ -955,12 +970,15 @@ FocusScope {
 
         focus: true
         title: Player.title
+        sectionTitle: Player.hasVideoOutput ? qsTr("Videos") : qsTr("Music")
 
         pinControls: MainCtx.pinVideoControls
 
         showCSD: MainCtx.clientSideDecoration && (MainCtx.intfMainWindow.visibility !== Window.FullScreen)
         showToolbar: MainCtx.hasToolbarMenu && (MainCtx.intfMainWindow.visibility !== Window.FullScreen)
         playlistVisible: playlistVisibility.isPlaylistVisible
+        navigationVisible: rootPlayer._showBrowser
+        onToggleBrowserVisibility: rootPlayer._showBrowser = !rootPlayer._showBrowser
 
         plListView: {
             if (playlistpopup.active)
@@ -1027,6 +1045,17 @@ FocusScope {
 
             visible: MainCtx.pinVideoControls || (MainCtx.hasEmbededVideo && !rootPlayer.displayFadeRectangles)
         }
+    }
+
+    PlayerBrowser {
+        id: designBrowser
+        z: 2
+        visible: rootPlayer._showBrowser && topBar.visible && topBar.opacity > 0
+        anchors.left: parent.left
+        anchors.top: topBar.bottom
+        anchors.bottom: controlBar.top
+        width: Math.min(implicitWidth, rootPlayer.width)
+        Navigation.parentItem: rootPlayer
     }
 
     Loader {
@@ -1279,7 +1308,7 @@ FocusScope {
         }
     }
 
-    ControlBar {
+    DesignPlayerControls {
         id: controlBar
 
         anchors {
@@ -1291,11 +1320,6 @@ FocusScope {
         hoverEnabled: true
 
         focus: true
-
-        rightPadding: VLCStyle.applicationHorizontalMargin
-        leftPadding: VLCStyle.applicationHorizontalMargin
-        topPadding: controlBar.inlineSeek ? VLCStyle.dp(11, VLCStyle.scale) : 0
-        bottomPadding: VLCStyle.applicationVerticalMargin + (controlBar.inlineSeek ? VLCStyle.dp(11, VLCStyle.scale) : VLCStyle.margin_xsmall)
 
         textPosition: (MainCtx.pinVideoControls)
                       ? ControlBar.TimeTextPosition.LeftRightSlider
@@ -1329,6 +1353,11 @@ FocusScope {
 
         onRequestLockUnlockAutoHide: (lock) => rootPlayer.lockUnlockAutoHide(lock)
 
+        onAudioRequested: DialogsProvider.extendedDialog()
+        onSubtitlesRequested: tracksMenu.open()
+        onSettingsRequested: DialogsProvider.prefsDialog()
+        onQueueRequested: playlistVisibility.togglePlaylistVisibility()
+
         identifier: (Player.hasVideoOutput) ? PlayerControlbarModel.Videoplayer
                                             : PlayerControlbarModel.Audioplayer
 
@@ -1336,21 +1365,6 @@ FocusScope {
 
         background: Rectangle {
             id: controlBarBackground
-
-            visible: !MainCtx.hasEmbededVideo || MainCtx.pinVideoControls || !rootPlayer.displayFadeRectangles
-
-            opacity: {
-                if (MainCtx.hasEmbededVideo && !MainCtx.pinVideoControls && !rootPlayer.displayFadeRectangles) {
-                    return 0.6
-                } else if ((Window.visibility === Window.FullScreen) && MainCtx.hasEmbededVideo) {
-                    return MainCtx.pinOpacity
-                } else if (AcrylicController.enabled || !MainCtx.hasEmbededVideo) {
-                    return 0.7
-                } else {
-                    return 1.0
-                }
-            }
-
             color: windowTheme.bg.primary
         }
 
@@ -1363,6 +1377,16 @@ FocusScope {
         id: audioContextMenu
 
         ctx: MainCtx
+    }
+
+    TracksMenu {
+        id: tracksMenu
+        parent: rootPlayer
+        x: Math.max(0, rootPlayer.width - width)
+        y: controlBar.y - height
+        z: 5
+        onOpened: rootPlayer.lockUnlockAutoHide(true)
+        onClosed: rootPlayer.lockUnlockAutoHide(false)
     }
 
     TapHandler {

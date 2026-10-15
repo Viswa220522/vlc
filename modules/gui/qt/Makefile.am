@@ -790,6 +790,47 @@ ui_%.h: %.ui
 # Resources
 
 libqt_plugin_la_RES = \
+	pixmaps/juxtopposed/sources.json \
+	pixmaps/juxtopposed/divider.png \
+	pixmaps/juxtopposed/volume.svg \
+	pixmaps/juxtopposed/pause.png \
+	pixmaps/juxtopposed/add.png \
+	pixmaps/juxtopposed/audio.png \
+	pixmaps/juxtopposed/back.png \
+	pixmaps/juxtopposed/browser-more.png \
+	pixmaps/juxtopposed/close.png \
+	pixmaps/juxtopposed/cone.png \
+	pixmaps/juxtopposed/expand.png \
+	pixmaps/juxtopposed/folder.png \
+	pixmaps/juxtopposed/fullscreen.png \
+	pixmaps/juxtopposed/home.png \
+	pixmaps/juxtopposed/list.png \
+	pixmaps/juxtopposed/maximize.png \
+	pixmaps/juxtopposed/minimize.png \
+	pixmaps/juxtopposed/more.png \
+	pixmaps/juxtopposed/music.png \
+	pixmaps/juxtopposed/network.png \
+	pixmaps/juxtopposed/next.png \
+	pixmaps/juxtopposed/play.png \
+	pixmaps/juxtopposed/playlists.png \
+	pixmaps/juxtopposed/previous.png \
+	pixmaps/juxtopposed/queue.png \
+	pixmaps/juxtopposed/recent.png \
+	pixmaps/juxtopposed/search.png \
+	pixmaps/juxtopposed/settings.png \
+	pixmaps/juxtopposed/sidebar.png \
+	pixmaps/juxtopposed/sort.png \
+	pixmaps/juxtopposed/subtitles.png \
+	pixmaps/juxtopposed/videos.png \
+	pixmaps/juxtopposed/volume.png \
+	pixmaps/fonts/dmmono/DMMono-Light.ttf \
+	pixmaps/fonts/dmmono/DMMono-Medium.ttf \
+	pixmaps/fonts/dmmono/DMMono-Regular.ttf \
+	pixmaps/fonts/inter/Inter-Italic.ttf \
+	pixmaps/fonts/inter/Inter.ttf \
+	pixmaps/fonts/dmmono/OFL.txt \
+	pixmaps/fonts/inter/OFL.txt \
+	pixmaps/fonts/sources.json \
 	pixmaps/VLCIcons.ttf \
 	pixmaps/addons/addon_default.svg \
 	pixmaps/addons/addon_broken.svg \
@@ -1037,6 +1078,7 @@ libqml_module_dialogs_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_dialogs_a_QML = \
 	dialogs/dialogs/qml/CustomDialog.qml \
 	dialogs/dialogs/qml/Dialogs.qml \
+	dialogs/dialogs/qml/DesignNewPlaylist.qml \
 	dialogs/dialogs/qml/ModalDialog.qml \
 	dialogs/dialogs/qml/WindowDialog.qml \
 	dialogs/toolbar/qml/EditorDNDDelegate.qml \
@@ -1062,6 +1104,8 @@ libqml_module_maininterface_a_QML = \
 	maininterface/qml/MainViewLoader.qml \
 	maininterface/qml/MainDisplay.qml \
 	maininterface/qml/SideNavigationPane.qml \
+	maininterface/qml/DesignNavigationPane.qml \
+	maininterface/qml/DesignBrowser.qml \
 	maininterface/qml/SideNavigationDelegate.qml \
 	maininterface/qml/NoMedialibHome.qml
 
@@ -1167,6 +1211,8 @@ libqml_module_player_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
 libqml_module_player_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_player_a_QML = \
 	player/qml/ControlBar.qml \
+	player/qml/DesignPlayerControls.qml \
+	player/qml/PlayerBrowser.qml \
 	player/qml/PlaybackSpeed.qml \
 	player/qml/LyricsFlickable.qml \
 	player/qml/MiniPlayer.qml \
@@ -1332,6 +1378,9 @@ libqml_module_widgets_a_QML = \
 	widgets/qml/GridSortFilterControls.qml \
 	widgets/qml/HorizontalResizeHandle.qml \
 	widgets/qml/IconLabel.qml \
+	widgets/qml/DesignIcon.qml \
+	widgets/qml/DesignIconButton.qml \
+	widgets/qml/DesignTitleBar.qml \
 	widgets/qml/IconButton.qml \
 	widgets/qml/IconToolButton.qml \
 	widgets/qml/IconTrackButton.qml \

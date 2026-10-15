@@ -170,15 +170,16 @@ T.Control {
     }
 
     contentItem: T.Label {
-        text: {
+        text: ""
+        readonly property string iconName: {
             const state = Player.playingState
 
             if (!paintOnly
                     && state !== Player.PLAYING_STATE_PAUSED
                     && state !== Player.PLAYING_STATE_STOPPED)
-                return VLCIcons.pause_filled
+                return "pause"
             else
-                return VLCIcons.play_filled
+                return "play"
         }
 
         color: (root.enabled || root.paintOnly) ? VLCStyle.foregroundForAccent(theme.bg.primary) : theme.fg.primary
@@ -191,6 +192,13 @@ T.Control {
         horizontalAlignment: Text.AlignHCenter
 
         Accessible.ignored: true
+        Widgets.DesignIcon {
+            anchors.centerIn: parent
+            width: implicitWidth
+            height: implicitHeight
+            name: parent.iconName
+            color: parent.color
+        }
 
         DelayedBehavior on color {
             delayedEnabled: theme.initialized

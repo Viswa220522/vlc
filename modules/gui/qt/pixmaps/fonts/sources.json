@@ -1,0 +1,44 @@
+[
+  {
+    "path": "inter/Inter.ttf",
+    "source": "https://github.com/google/fonts/tree/main/ofl/inter",
+    "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+    "sourceFile": "Inter[opsz,wght].ttf"
+  },
+  {
+    "path": "inter/Inter-Italic.ttf",
+    "source": "https://github.com/google/fonts/tree/main/ofl/inter",
+    "sha256": "acd98e64795781b2058f07b18475e0ecee2a0fe2b42a49e2f9e37d0d6bf66ce6",
+    "sourceFile": "Inter-Italic[opsz,wght].ttf"
+  },
+  {
+    "path": "inter/OFL.txt",
+    "source": "https://github.com/google/fonts/tree/main/ofl/inter",
+    "sha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57",
+    "sourceFile": "OFL.txt"
+  },
+  {
+    "path": "dmmono/DMMono-Regular.ttf",
+    "source": "https://github.com/google/fonts/tree/main/ofl/dmmono",
+    "sha256": "55b4c98f123daebb3ed27947ba47b2af00554fc6284d639a540bcef5e6258ad2",
+    "sourceFile": "DMMono-Regular.ttf"
+  },
+  {
+    "path": "dmmono/DMMono-Medium.ttf",
+    "source": "https://github.com/google/fonts/tree/main/ofl/dmmono",
+    "sha256": "fd327daf461db87b44a87def475d251bf03b997f7c07d9680592d75dbbfaad0b",
+    "sourceFile": "DMMono-Medium.ttf"
+  },
+  {
+    "path": "dmmono/DMMono-Light.ttf",
+    "source": "https://github.com/google/fonts/tree/main/ofl/dmmono",
+    "sha256": "c7b3645dc8d28237317b4d017bc47b9ff09a7660758122dacb694a5a82552c24",
+    "sourceFile": "DMMono-Light.ttf"
+  },
+  {
+    "path": "dmmono/OFL.txt",
+    "source": "https://github.com/google/fonts/tree/main/ofl/dmmono",
+    "sha256": "2bada5ea45c3c63b7f1ea1f88ce9672c9e4f0c42b2c3b7378949084fe55a3066",
+    "sourceFile": "OFL.txt"
+  }
+]

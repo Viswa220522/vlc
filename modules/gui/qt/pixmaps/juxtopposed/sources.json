@@ -1,0 +1,199 @@
+{
+  "author": "Juxtopposed",
+  "design": "VLC Redesign (Community) 3",
+  "reference": "http://127.0.0.1:29978/file/01M4T9D3SQKKJGSXMQFSSRAY0A/p-1-0",
+  "assets": [
+    {
+      "file": "add.png",
+      "node": "X86-0",
+      "scale": 3,
+      "sha256": "4cbc95ca6a807cb58b52c49d479f1c41e12bf34afbce58f9406f0b2cbee66c9a"
+    },
+    {
+      "file": "audio.png",
+      "node": "XCB-0",
+      "scale": 3,
+      "sha256": "d93ab5aa81206ccf80879c3511da13572856f2ec93b1f12e301fc5da72348beb"
+    },
+    {
+      "file": "back.png",
+      "node": "X8F-0",
+      "scale": 3,
+      "sha256": "716ed1f8df77f849137a4fa081bd50eab3a93e5e5c0a8eaa585a2fd9645279df"
+    },
+    {
+      "file": "browser-more.png",
+      "node": "X8Q-0",
+      "scale": 3,
+      "sha256": "a61f2dff1ebe015b851034ce48332d6f5684b471054373cb665eb215524f4d0b"
+    },
+    {
+      "file": "close.png",
+      "node": "X6O-0",
+      "scale": 3,
+      "sha256": "7f0342c5973d6e064bee8385dee914606b9ab6b65494c0c248dfb216d64a9fcf"
+    },
+    {
+      "file": "cone.png",
+      "node": "X5F-0",
+      "scale": 3,
+      "sha256": "4193183119d47a0d94480f2b702af8857516d7338b7b0282362f914d3387b9dd"
+    },
+    {
+      "file": "divider.png",
+      "node": "X60-0",
+      "scale": 3,
+      "sha256": "68c834cc0bb4014b404b59a4e22b85f6d27e468472a868ac54598e5ec5e9a9ea"
+    },
+    {
+      "file": "expand.png",
+      "node": "X8W-0",
+      "scale": 3,
+      "sha256": "48c9350a1abcda66dcadb2246425198540fe89a24e9bc79209b0307da1b3661f"
+    },
+    {
+      "file": "folder.png",
+      "node": "X65-0",
+      "scale": 3,
+      "sha256": "0dea126a584372c3f940ed0ee19c694d30f9c9a6b77d58f55e6ed9e2349f9373"
+    },
+    {
+      "file": "fullscreen.png",
+      "node": "X6K-0",
+      "scale": 3,
+      "sha256": "d2d342564334d30f5e94f1673d034c4c54644555c8b8e0db1f7dac17fb59baff"
+    },
+    {
+      "file": "home.png",
+      "node": "X6W-0",
+      "scale": 3,
+      "sha256": "48466735fd5fdd38838ca6bdc9c33e7fb3101ef4ebc55d071fd184bcdc28e8e0"
+    },
+    {
+      "file": "list.png",
+      "node": "X98-0",
+      "scale": 3,
+      "sha256": "c21ca6a04225281db1af97800ea7bee178f9f0c06577e4726cd5a1a4ea4bde63"
+    },
+    {
+      "file": "maximize.png",
+      "node": "X6G-0",
+      "scale": 3,
+      "sha256": "cc84aa7bda2416f3bedd9dd5689d8d1322abd7633213deda7d008cbc51671ec7"
+    },
+    {
+      "file": "minimize.png",
+      "node": "X6C-0",
+      "scale": 3,
+      "sha256": "8db20e611301db2c974dbefdda5f9be28e5e49e8e92632467f0b1407d8c26602"
+    },
+    {
+      "file": "more.png",
+      "node": "X5N-0",
+      "scale": 3,
+      "sha256": "a28e4a9294e76362da5f3b4c5bfdcf693e6128b07e7387e96fc29835daac0313"
+    },
+    {
+      "file": "music.png",
+      "node": "X7B-0",
+      "scale": 3,
+      "sha256": "c114d84c56ac094ad4a2671f4864284ed836bd9b0fa31b59c7c96af932c6dfad"
+    },
+    {
+      "file": "network.png",
+      "node": "X7I-0",
+      "scale": 3,
+      "sha256": "a8cfd1f8aa592d326a7569f551abbdc41dc201c524f9b8cb763434e3aa29562b"
+    },
+    {
+      "file": "next.png",
+      "node": "XBC-0",
+      "scale": 3,
+      "sha256": "848ab7fd9d2a614a2d79f69fd0d00e6f688d42b7ba4d1b9643dd7870819f4078"
+    },
+    {
+      "file": "pause.png",
+      "node": "WD8-0",
+      "scale": 3,
+      "sha256": "e09209ec3f126c423a405c8fde2e3d31616484b108ad86c521bf7cf6200545e0"
+    },
+    {
+      "file": "play.png",
+      "node": "XB6-0",
+      "scale": 3,
+      "sha256": "1aba943356c392148ddb1bbb6ac5d11445125cdb4236fefce8a8cc005e56d656"
+    },
+    {
+      "file": "playlists.png",
+      "node": "X7Q-0",
+      "scale": 3,
+      "sha256": "ee2766273e402583c166f827323eb7a94b43e1207e3fb3f16850c00f3e07f8e0"
+    },
+    {
+      "file": "previous.png",
+      "node": "XAW-0",
+      "scale": 3,
+      "sha256": "ca57e7f66d3fc9bb9443238d5498d8246d1aedac5bd0e09204e27e71d1e39c46"
+    },
+    {
+      "file": "queue.png",
+      "node": "XCZ-0",
+      "scale": 3,
+      "sha256": "99e0ea704e877b9d4e6276281d8f2ef6dce8663c9a9cd53b197fc2430e0f9826"
+    },
+    {
+      "file": "recent.png",
+      "node": "X80-0",
+      "scale": 3,
+      "sha256": "5f977b659ea981487adc03ce981a3dab44db93d6db33a6820b94368a2eb61a68"
+    },
+    {
+      "file": "search.png",
+      "node": "X9F-0",
+      "scale": 3,
+      "sha256": "b48eb0820d04680c89f3cec55a0c8387ae76a0769513c33ef77d73da9c6be975"
+    },
+    {
+      "file": "settings.png",
+      "node": "XCR-0",
+      "scale": 3,
+      "sha256": "2e24172886f03f9f8e4a349c9a452b109996707dc4d73ad194e0fd2f6094cf78"
+    },
+    {
+      "file": "sidebar.png",
+      "node": "X5T-0",
+      "scale": 3,
+      "sha256": "c968d0bfa1e457c7627fa74e953c82f1c9e3f9e9b392c5df7c5d479487ca7c70"
+    },
+    {
+      "file": "sort.png",
+      "node": "X93-0",
+      "scale": 3,
+      "sha256": "6342efcccbcc4a3afe0c7a1eebf4e68c6ee24dfb38b7f629cd3a7353e84782a4"
+    },
+    {
+      "file": "subtitles.png",
+      "node": "XCK-0",
+      "scale": 3,
+      "sha256": "f69f23811fd7ef2089ebe9078fa64c18fd6b210f7755f14aeaf3bdcf765d74b4"
+    },
+    {
+      "file": "videos.png",
+      "node": "X73-0",
+      "scale": 3,
+      "sha256": "14c0d9ac3b364b0533b0da7c3a419c11d6d2434f6319c021bb15925aa36195c2"
+    },
+    {
+      "file": "volume.png",
+      "node": "XBU-0",
+      "scale": 3,
+      "sha256": "45a631eda325ac1c2f9cf672d1458c72880d442f0a1ec3c2eaa5a5d3193bd9b9"
+    },
+    {
+      "file": "volume.svg",
+      "node": "XC2-0",
+      "format": "original SVG export",
+      "sha256": "810dd7f29d3376c358efc638892559b858e3be2ac3490e442c8de579d676451a"
+    }
+  ]
+}

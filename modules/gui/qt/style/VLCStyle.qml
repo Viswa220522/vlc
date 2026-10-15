@@ -26,12 +26,9 @@ QtObject {
 
     readonly property real scale: MainCtx.intfScaleFactor
 
-    // Do not depend on platform font substitution for an uninstalled family.
-    readonly property var installedFontFamilies: Qt.fontFamilies()
-    readonly property string fontFamily: installedFontFamilies.includes("Inter") ? "Inter"
-                                        : (Qt.platform.os === "windows" && installedFontFamilies.includes("Segoe UI") ? "Segoe UI" : Qt.application.font.family)
-    readonly property string timeFontFamily: installedFontFamilies.includes("DM Mono") ? "DM Mono"
-                                             : (Qt.platform.os === "windows" ? "Consolas" : "monospace")
+    // Bundled and registered before the QML engine is created (MainUI).
+    readonly property string fontFamily: "Inter"
+    readonly property string timeFontFamily: "Inter"
     readonly property int fontSize_time: MainCtx.dp(15, scale)
 
     readonly property FontMetrics fontMetrics_xxsmall  : FontMetrics { font.pixelSize: MainCtx.dp(6, scale);  }
@@ -187,7 +184,7 @@ QtObject {
     readonly property real button_radius: MainCtx.dp(6, scale)
 
     readonly property int playButtonWidth: MainCtx.dp(54, scale)
-    readonly property int playButtonHeight: MainCtx.dp(32, scale)
+    readonly property int playButtonHeight: MainCtx.dp(28, scale)
 
     readonly property int contextButton_width: icon_normal
     readonly property int contextButton_margin: margin_xxsmall
@@ -224,7 +221,7 @@ QtObject {
 
     readonly property int artistGridCover_radius: MainCtx.dp(90, scale)
 
-    readonly property real mainView_topLeftRadius: MainCtx.dp(8, scale)
+    readonly property real mainView_topLeftRadius: 0
 
     //GridItem
     readonly property int gridItemTitle_topMargin: margin_xsmall + margin_xxxsmall

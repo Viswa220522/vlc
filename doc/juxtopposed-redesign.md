@@ -1,125 +1,94 @@
-# Juxtopposed-inspired VLC interface
+# VLC reference redesign ? work in progress
 
-This personal fork adapts the desktop Qt/QML interface to the community concept
-by [Juxtopposed (@juxtopposed)](https://www.youtube.com/@juxtopposed). Thank you
+Design credit and thanks to [Juxtopposed (@juxtopposed)](https://www.youtube.com/@juxtopposed)
 for [I Redesigned VLC After 25 Years](https://www.youtube.com/watch?v=ERFeOgqk324)
-and [the original design file](https://www.figma.com/community/file/1691465999134370980).
-The design concept is credited to Juxtopposed; the implementation is an independent
-community adaptation and is not an endorsed VideoLAN release.
+and [the community design](https://www.figma.com/community/file/1691465999134370980).
+This is an independent implementation in the Viswa220522 personal fork.
 
-## Source implementation
+The current target is the supplied design, including its layout and original
+assets. The earlier palette-only adaptation is not a complete implementation.
 
-- Native Day and Night palettes use the reference orange (#D37918), graphite
-  window chrome (#1B1B1B), near-black canvas (#0E0E0E), recessed seek surface
-  (#090909), and muted labels (#8F8F8F). System theme providers still control the
-  System scheme.
-- Inter is used when installed, with Segoe UI on Windows or the application's
-  font as fallback. DM Mono is used for time if installed, with Consolas/monospace
-  fallback. No font binaries are bundled.
-- Shared labels, buttons, text fields, navigation, and player titles use the
-  reference typography and rounded controls. The collapsed navigation rail is
-  50 logical pixels; expanded navigation retains VLC's existing tree model.
-- Play/Pause uses a 54 by 32 logical-pixel accent button, including keyboard focus
-  and the existing press-and-hold Stop action.
-- Pinned video/audio controls embed the seek row between transport and options
-  when the window is at least 1200 logical pixels wide and all controls plus
-  the seek row fit. Smaller windows and profiles with a center group use the
-  stacked layout. Chapter seeking, bookmarks, time toggling, and playback menus
-  continue using VLC's existing components and handlers.
-- The built-in Default Style moves video/audio transport controls to the left
-  and playback options to the right. Its control IDs are retained. Saved toolbar
-  profiles are not migrated or overwritten; the miniplayer profile is unchanged.
+## Implemented reference surfaces
 
-## Trying it after building
+- Native 40 px title bar, original cone and window/menu icons.
+- Native 50 px navigation rail and 377 px browser; the library uses the supplied
+  217 px expanded navigation layout with seven destinations.
+- Native 54 px playback strip: 130 px transport, flexible timeline with 76 px time
+  fields, 120 px volume, 114 px options, and 30 px queue. Group gaps and outer
+  horizontal padding are 20 px. Play/Pause is 54 ? 28 px.
+- Original exported icons; Inter and DM Mono bundled privately with OFL notices.
+  Playback timestamps use Inter, as specified by the supplied player layers.
+- The original volume SVG drives a live level indicator. Runtime normalization
+  handles Qt's luminance masks and legacy SVG color syntax without redrawing
+  the artwork.
+- The browser reads VLC's media-library playlist, folder, and recent-media models.
+  Playlist contents and back/forward navigation use real model IDs. No sample
+  playlists or media are included in the application.
+- The supplied 713 ? 590 New Playlist dialog supports title entry, file selection,
+  dropped URLs, thumbnail selection, and native playlist creation. Custom covers
+  are stored with the portable preferences and used by the playlist grid.
+- The player's video frame uses the reference inset and corner treatment.
 
-Use VLC's **Night** scheme for the dark reference, or **Day** for the light
-variant. System mode follows the operating system palette rather than these
-reference colors. Enable pinned video controls and use a wide window to see
-the inline seek row. If an existing Default Style was saved before this fork,
-create/select a fresh Default Style in the toolbar editor to use the new groups.
-Do not reset all VLC preferences just to preview the redesign.
+Dimensions are logical pixels at 100% interface scale. Real media, library names,
+item counts, durations, and playback state depend on the user's content.
+Original asset nodes and hashes are recorded in `pixmaps/juxtopposed/sources.json`;
+font sources, hashes, and licenses are under `pixmaps/fonts`.
 
-Build prerequisites and procedures are maintained in [INSTALL](../INSTALL) and
-VLC's platform-specific build documentation. This branch changes native source;
-opening a QML file alone does not provide VLC's registered C++ types and services.
+## Still unfinished
 
-### Portable Windows build on the personal fork
+The full library grids/headers, music playback content, settings and effects
+panels, onboarding, subtitle/waveform timelines, context menus, and toolbar
+customization screens still require implementation against their reference
+states. Several actions currently open VLC's existing native dialogs. Home,
+Music, and Network rail destinations currently open the main library instead
+of their narrow browser variants. The new player strip currently uses its fixed
+reference arrangement; applying saved toolbar arrangements to this strip is
+also unfinished. The existing toolbar data and miniplayer remain available.
 
-The [Windows build workflow](../.github/workflows/vlc-win64-build.yml) uses
-VideoLAN's win64 CI image pinned by digest and the matching upstream prebuilt
-contribs. Its [build script](../.github/scripts/build-win64.sh) compiles the full
-Qt interface and packages a portable Windows ZIP. The workflow uploads build
-logs, a source/dependency receipt, and ZIP checksums. It does not install tools
-or VLC on the user's PC. Run the extracted `vlc.exe` after a successful build.
+Do not describe this branch as an exact, complete concept port or an error-free
+release until these surfaces and full application behavior have been checked.
+The imported player media image is missing; no replacement illustration was
+invented. Screenshots of complete design boards are never application assets.
 
-The workflow runs when its files are pushed on `redesign/juxtopposed-ui`, or by
-manual dispatch. It is restricted to the `Viswa220522/vlc` fork. If the matching
-upstream dependency bundle is unavailable, it stops with the dependency URL
-rather than attempting to compile the entire dependency stack. A successful
-package still needs application runtime and visual checks.
+## Validation
 
-## Reference gaps and adaptations
+The baseline [native Windows build succeeded](https://github.com/Viswa220522/vlc/actions/runs/38617568908)
+at commit `75c3dac`. Its portable ZIP checksum was verified. Local native smoke
+tests decoded audio and an image, but found an omitted shared GCC runtime and
+shutdown callbacks accessing deleted QML objects. Packaging and callback fixes
+are in the current work and require another native run.
 
-The Brix import was inspected directly through JSX and computed styles. It has
-no design tokens. The imported player image is broken, so no replacement video
-artwork was inferred or added. The 50-pixel rail and 377-pixel browser in the
-concept are adapted to VLC's existing resizable navigation pane; this change
-does not implement a second library browser beside the rail.
+The latest local checks pass 35 existing component cases and 31 reference cases,
+with zero runtime Qt warnings/errors. The reference cases exercise the actual
+production title bar, navigation, browser, playback strip, volume widget, and
+New Playlist dialog with isolated VLC service adapters. They check reference
+geometry, button commands, seeking focus, playlist navigation/creation, input
+validation, volume rendering, and captures. These adapters do not validate the
+C++ backend or native system menus/window actions.
 
-The concept's onboarding, waveform timeline, subtitle timeline, and redesigned
-settings panels are not implemented here. VLC's QWidget preferences and dialogs
-remain existing native dialogs. Imported screenshots, font files, and media
-artwork are not copied into the application. These gaps require further design
-mapping and native implementation before claiming a complete concept port.
+`qmllint` parses 26 affected QML files with no syntax or duplicate-binding/name
+errors. Full typed diagnostics retain warnings about unavailable generated VLC
+modules. Python compilation, shell syntax, workflow actionlint, and Git
+whitespace checks are also required before pushing.
 
-## Validation status
+The [component workflow](../.github/workflows/qt-redesign-checks.yml) runs both
+runners on Windows/Linux and Qt 6.8.3/6.11.2. The earlier 35-case matrix passed
+[on all four combinations](https://github.com/Viswa220522/vlc/actions/runs/38617568651).
+The expanded reference suite must pass the same matrix for the new source.
 
-Source files were reviewed, delimiters checked, QML IDs checked for duplicates,
-and the default profile's control IDs compared with the original. Measured
-contrast ratios are 15.61:1 for primary dark text, 5.33:1 for secondary dark text
-on window chrome, 5.62:1 for the play icon, and 10.98:1 for primary light text.
+## Portable Windows build
 
-Verification on Windows with Qt 6.11.2 now passes **35 checks with zero failures
-and zero Qt runtime warnings/errors**. The real production QML components were
-loaded in Qt with isolated VLC service/type adapters. Resize/profile changes,
-empty/crowded profiles, 100%/150%/200% scaling, Day/Night selection, Tab order,
-pointer/keyboard seeking, chaptered timelines, Play/Pause, both Stop hold actions,
-custom accent contrast, and component rendering were exercised. Qt-rendered
-wide, narrow, and light component captures were visually reviewed.
+The [build workflow](../.github/workflows/vlc-win64-build.yml) uses VideoLAN's
+pinned win64 CI image and matching prebuilt contribs. It compiles native VLC and
+packages a portable ZIP, source/dependency receipt, and SHA-256 checksum.
+Extraction and launching `vlc.exe` need no VLC installation. Its `portable`
+directory isolates preferences; fresh previews start with Night colors and
+pinned controls. The user's installed VLC is separate.
 
-`qmllint` reports zero syntax/duplicate-binding errors for all 14 changed QML
-files. Its full diagnostics are retained: native VLC module/type information is
-not built, so the full semantic lint still contains unresolved-type/import and
-related warnings. These results do not constitute a clean fully typed lint run.
-Git whitespace checks, Python compilation, palette color literal validation,
-default toolbar control inventory checks, and workflow `actionlint` pass.
+CI validation builds include an opt-in `VLC_QT_UI_TEST_OUTPUT` environment hook
+that saves the application's own Qt scene. Ordinary builds exclude this hook.
+The hook captures no desktop content and performs no external GUI automation.
 
-The runtime checks reproduced and fixed the disappearing compact seek thumb,
-unreadable custom accent foregrounds, and seek-host null accesses. A malformed
-native palette color literal was corrected, and font fallback was made explicit.
-See [the repeatable test runner](../modules/gui/qt/tests/redesign/README.md).
-The GitHub workflow is prepared for Windows and Linux; it has not been run on
-GitHub yet. Local reports and component captures are in the workspace's
-`.validation/redesign` directory.
-
-**Pending:** a full C++ VLC build, fully typed lint against the generated VLC
-modules, and application integration testing with real media/backend services.
-This machine has no C++ build toolchain or VLC native dependencies installed.
-The test adapters do not validate decoding, preferences dialogs, or live menus.
-
-Application integration checks to complete before treating this branch as ready:
-
-- Load Day, Night, and System themes; verify custom accents and 100%/150% scaling.
-- Play video and audio; compare pinned wide, pinned narrow, and floating controls.
-- Resize across the compact threshold and change toolbar profiles while playing.
-- Use Tab, arrows, and accessibility actions across transport, seek, and options.
-- Seek chaptered and unchaptered media, resume playback, display bookmarks,
-  toggle remaining time, and open playback menus.
-- Use pointer and keyboard press-and-hold Stop and verify toolbar editor previews.
-- Inspect long titles, expanded/collapsed navigation, and the miniplayer.
-
-## Submission
-
-Changes are intended for the Viswa220522 personal fork. No PR has been opened.
-PR creation requires the user's approval after validation. VLC upstream directs
-contributions through [VideoLAN GitLab](https://code.videolan.org/videolan/vlc).
+No PR has been opened. Ask the user before creating one. VLC upstream uses
+[VideoLAN GitLab](https://code.videolan.org/videolan/vlc); personal use or a PR
+within the fork remains the intended path.
