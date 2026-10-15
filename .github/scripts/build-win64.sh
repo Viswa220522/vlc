@@ -23,6 +23,12 @@ x86_64-w64-mingw32-g++ --version
 curl --fail --location --head --max-time 60 "$VLC_PREBUILT_CONTRIBS_URL"
 
 mkdir -p "$source_root/.build" "$source_root/build-output"
+# Scope the pinned runtime workaround to this portable Qt plugin. Ordinary VLC
+# builds do not set this make variable and retain their normal linking.
+x86_64-w64-mingw32-gcc -O2 -Wall -Wextra -Werror -c \
+    "$source_root/.github/scripts/qt-runtime-shutdown.c" \
+    -o "$source_root/.build/qt-runtime-shutdown.o"
+export VLC_QT_RUNTIME_LDFLAGS="$source_root/.build/qt-runtime-shutdown.o -Wl,--wrap=pthread_key_delete"
 # The published bundle's HostData contains a relative prefix concatenated with
 # its relocation marker. HostPrefix is relative to the original GitLab layout.
 # Use explicit target/native paths for this out-of-tree GitHub checkout.
@@ -58,6 +64,13 @@ export CONFIGFLAGS="${CONFIGFLAGS:-} --with-qtconf=$source_root/.build/relocated
 cd "$source_root/.build"
 export JOBS=2
 "$source_root/extras/package/win32/build.sh" -a x86_64 -p 2>&1 | tee win64-build.log
+# Preserve function addresses before packaging strips the Qt plugin. These let
+# native shutdown traces identify the exact statically linked runtime function.
+qt_plugin=win64/modules/gui/qt/.libs/libqt_plugin.dll
+if [[ -f "$qt_plugin" ]]; then
+    x86_64-w64-mingw32-nm --numeric-sort --defined-only --demangle "$qt_plugin" \
+        > "$source_root/build-output/qt-plugin-symbols.txt"
+fi
 make -C win64 -j2 package-win32-zip 2>&1 | tee -a win64-build.log
 
 shopt -s nullglob

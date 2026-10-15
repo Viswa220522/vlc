@@ -5,6 +5,14 @@ for [I Redesigned VLC After 25 Years](https://www.youtube.com/watch?v=ERFeOgqk32
 and [the community design](https://www.figma.com/community/file/1691465999134370980).
 This is an independent implementation in the Viswa220522 personal fork.
 
+Figma's [Community licensing policy](https://help.figma.com/hc/en-us/articles/360042296374-Figma-Community-copyright-and-licensing)
+states that free design files use [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The specific resource's license panel and any separate third-party asset notices
+have not yet been verified. This note records that outstanding check; it does
+not assert a verified license for every imported icon or imply endorsement.
+The implementation changes the source layout into native QML, flattens icon
+wrapper transforms into SVG, and adds live playback and library bindings.
+
 The current target is the supplied design, including its layout and original
 assets. The earlier palette-only adaptation is not a complete implementation.
 
@@ -56,13 +64,12 @@ invented. Screenshots of complete design boards are never application assets.
 
 ## Validation
 
-The baseline [native Windows build succeeded](https://github.com/Viswa220522/vlc/actions/runs/38617568908)
-at commit `75c3dac`. Its portable ZIP checksum was verified. Local native smoke
-tests decoded audio and an image, but found an omitted shared GCC runtime and
-shutdown callbacks accessing deleted QML objects. Packaging and callback fixes
-are in the current work and require another native run.
+Native compilation and component tests are separate from application validation.
+The portable smoke test must verify audio/image decoding, Qt startup with and
+without the media library, plugin loading, scene capture, and normal shutdown.
+Its logs and report are uploaded even when the runtime job fails.
 
-The latest local checks pass 35 existing component cases and 93 reference cases,
+The current local checks pass 35 existing component cases and 95 reference cases,
 with zero runtime Qt warnings/errors. The reference cases exercise the actual
 production title bar, navigation, browser, playback strip, volume widget, and
 New Playlist dialog with isolated VLC service adapters. They check reference
@@ -77,9 +84,12 @@ modules. Python compilation, shell syntax, workflow actionlint, and Git
 whitespace checks are also required before pushing.
 
 The [component workflow](../.github/workflows/qt-redesign-checks.yml) runs both
-runners on Windows/Linux and Qt 6.8.3/6.11.2. The earlier 35-case matrix passed
-[on all four combinations](https://github.com/Viswa220522/vlc/actions/runs/38617568651).
-The expanded reference suite must pass the same matrix for the new source.
+runners on Windows/Linux and Qt 6.8.3/6.11.2. The 130-check matrix passed
+[on all four combinations](https://github.com/Viswa220522/vlc/actions/runs/38770804611)
+at commit `d331c7c`. These isolated adapters previously missed native integration
+errors: an incorrectly named singleton, eager loading of optional library types,
+and Canvas being absent from the contrib build. They do not establish that the
+complete native app is error-free.
 
 ## Portable Windows build
 
@@ -93,6 +103,13 @@ pinned controls. The user's installed VLC is separate.
 CI validation builds include an opt-in `VLC_QT_UI_TEST_OUTPUT` environment hook
 that saves the application's own Qt scene. Ordinary builds exclude this hook.
 The hook captures no desktop content and performs no external GUI automation.
+
+The pinned MinGW runtime also needs a portable-build workaround: its static
+libstdc++ cleanup can call `pthread_key_delete` after Windows has terminated
+other threads, leaving that call waiting for an abandoned reader lock.
+The wrapper in `.github/scripts/qt-runtime-shutdown.c` bypasses key deletion only
+while the process is terminating. Normal deletion and explicit DLL unload retain
+their runtime behavior. Ordinary source builds do not enable this wrapper.
 
 No PR has been opened. Ask the user before creating one. VLC upstream uses
 [VideoLAN GitLab](https://code.videolan.org/videolan/vlc); personal use or a PR

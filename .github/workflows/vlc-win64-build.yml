@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/vlc-win64-build.yml'
       - '.github/scripts/build-win64.sh'
+      - '.github/scripts/qt-runtime-shutdown.c'
       - '.github/licenses/**'
       - 'bin/winvlc.c'
       - 'modules/gui/qt/tests/redesign/verify_native.py'
@@ -23,7 +24,8 @@ permissions:
 
 concurrency:
   group: vlc-win64-${{ github.ref }}
-  cancel-in-progress: true
+  # Keep the current package and runtime diagnostics; replace only queued runs.
+  cancel-in-progress: false
 
 jobs:
   win64:
