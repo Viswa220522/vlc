@@ -72,7 +72,7 @@ if HAVE_LIBATOMIC
 libqt_plugin_la_CXXFLAGS += -DQT_HAS_LIBATOMIC
 libqt_plugin_la_LIBADD += -latomic
 endif
-libqt_plugin_la_LDFLAGS = $(AM_LDFLAGS) $(QT_LDFLAGS) $(GC_SECTIONS_LDFLAGS)
+libqt_plugin_la_LDFLAGS = $(AM_LDFLAGS) $(QT_LDFLAGS) $(GC_SECTIONS_LDFLAGS) $(VLC_QT_RUNTIME_LDFLAGS)
 if HAVE_OSX
 libqt_plugin_la_LDFLAGS += -Wl,-framework,Cocoa
 endif

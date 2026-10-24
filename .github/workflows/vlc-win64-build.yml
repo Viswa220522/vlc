@@ -1,0 +1,113 @@
+name: VLC custom Windows portable build
+
+on:
+  push:
+    branches: [custom/lite-redesign]
+    paths:
+      - '.github/workflows/vlc-win64-build.yml'
+      - '.github/scripts/build-win64.sh'
+      - '.github/scripts/qt-runtime-shutdown.c'
+      - '.github/licenses/**'
+      - 'bin/winvlc.c'
+      - 'modules/gui/qt/tests/redesign/verify_native.py'
+      - 'modules/gui/qt/**/*.qml'
+      - 'modules/gui/qt/**/*.cpp'
+      - 'modules/gui/qt/**/*.hpp'
+      - 'modules/gui/qt/assets.qrc'
+      - 'modules/gui/qt/Makefile.am'
+      - 'modules/gui/qt/meson.build'
+      - 'modules/gui/qt/pixmaps/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vlc-win64-${{ github.ref }}
+  # Keep the current package and runtime diagnostics; replace only queued runs.
+  cancel-in-progress: false
+
+jobs:
+  win64:
+    if: github.repository == 'Viswa220522/vlc'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      # VideoLAN's win64 CI image from extras/ci/gitlab-ci.yml, pinned by digest.
+      image: registry.videolan.org/vlc-debian-win64-posix@sha256:8e83e800036f8f4a6da1031a6b80c2b5bad8337259c072ffa22398baaeaad880
+      # The image's default UID cannot write GitHub runner command files.
+      options: --user 0:0
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          # get-contrib-sha.sh needs history to find the matching upstream bundle.
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Compile VLC and package the Qt interface
+        run: |
+          # Checkout and build use different HOME paths inside this container.
+          # Trust only this runner's checkout, whose mount is owned by the host UID.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          bash .github/scripts/build-win64.sh
+      - name: Upload portable Windows package
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: vlc-redesign-win64-${{ github.sha }}
+          path: build-output/*
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+      - name: Upload build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: vlc-win64-build-logs-${{ github.sha }}
+          path: |
+            .build/win64-build.log
+            .build/win64/config.log
+          if-no-files-found: warn
+          retention-days: 14
+
+  native-runtime:
+    needs: win64
+    runs-on: windows-2025
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: vlc-redesign-win64-${{ github.sha }}
+          path: native-package
+      - name: Check package checksum and extract portable VLC
+        shell: pwsh
+        run: |
+          $package = @(Get-ChildItem native-package -Filter *.zip)
+          if ($package.Count -ne 1) { throw 'Expected exactly one portable ZIP' }
+          $expected = ((Get-Content native-package/SHA256SUMS).Trim() -split '\s+')[0]
+          if ((Get-FileHash $package[0].FullName -Algorithm SHA256).Hash -ine $expected) {
+            throw 'Portable ZIP checksum mismatch'
+          }
+          Expand-Archive -LiteralPath $package[0].FullName -DestinationPath native-portable
+      - name: Exercise native decoding and Qt startup and shutdown
+        shell: pwsh
+        run: |
+          $executable = @(Get-ChildItem native-portable -Recurse -Filter vlc.exe)
+          if ($executable.Count -ne 1) { throw 'Expected exactly one VLC executable' }
+          python modules/gui/qt/tests/redesign/verify_native.py $executable[0].FullName --output native-results
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Upload native runtime diagnostics and scene captures
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: vlc-native-runtime-${{ github.sha }}
+          path: native-results
+          if-no-files-found: warn
+          retention-days: 14

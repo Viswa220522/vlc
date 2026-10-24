@@ -1,6 +1,11 @@
 #include "mainui.hpp"
 
 #include <cassert>
+#ifdef VLC_QT_UI_TESTING
+#include <QQuickItemGrabResult>
+#include <QQuickWindow>
+#include <QTimer>
+#endif
 
 #include "maininterface/navigationmodel.hpp"
 
@@ -211,6 +216,29 @@ QQuickItem* MainUI::createRootItem()
         msg_Err(m_intf, "unexpected type of qml root item");
         goto end;
     }
+
+#ifdef VLC_QT_UI_TESTING
+    // Opt-in capture of this application's own scene for portable UI tests.
+    // Only compiled into test builds; no desktop capture or external input.
+    if (const auto output = qEnvironmentVariable("VLC_QT_UI_TEST_OUTPUT"); !output.isEmpty())
+    {
+        const QPointer<QQuickItem> sceneRoot = m_rootItem;
+        QTimer::singleShot(3000, this, [this, output, sceneRoot] {
+            if (!sceneRoot)
+                return;
+            const auto grab = sceneRoot->grabToImage();
+            if (!grab)
+            {
+                msg_Err(m_intf, "UI test: unable to capture the interface scene");
+                return;
+            }
+            connect(grab.data(), &QQuickItemGrabResult::ready, this, [this, grab, output] {
+                if (!grab->saveToFile(output))
+                    msg_Err(m_intf, "UI test: unable to save the interface capture");
+            }, Qt::SingleShotConnection);
+        });
+    }
+#endif
 
 end:
     delete m_component; // No need to have the component around anymore.
